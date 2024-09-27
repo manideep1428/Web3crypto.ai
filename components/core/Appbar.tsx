@@ -2,8 +2,7 @@
 
 import { useState } from "react";
 import { usePathname, useRouter } from "next/navigation";
-import { SuccessButton } from "./Button";
-import { HandCoins, Menu, Wallet, X } from "lucide-react";
+import { HandCoins, Menu, X } from "lucide-react";
 import UserDetails from "../account/UserDetails";
 import DarkModeToggle from "../DarkModeToggle";
 import { signIn, useSession } from "next-auth/react";
