@@ -8,7 +8,6 @@ import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Card, CardContent } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
-import { toast } from "./ui/use-toast";
 import { ToastAction } from "@radix-ui/react-toast";
 import { useRouter } from "next/navigation";
 
@@ -22,6 +21,7 @@ import {
   setOrderType,
   setMarketPrice,
 } from "@/store/slices/cryptoOrders";
+import { useToast } from "@/components/ui/use-toast";
 
 export function OrderUI({ market }: { market: string }) {
   const dispatch = useDispatch();
@@ -32,6 +32,7 @@ export function OrderUI({ market }: { market: string }) {
   const [loading, setLoading] = useState(false);
   const ws = useRef<WebSocket | null>(null);
   const router = useRouter();
+  const { toast }  = useToast();
 
   useEffect(() => {
     if (typeof window !== "undefined") {
