@@ -8,6 +8,7 @@ import { ArrowDown, ArrowUp } from "lucide-react"
 import { getCrypto } from "@/app/utils/ServerProps"
 import Image from "next/image"
 import { useRouter } from "next/navigation"
+import CryptoListSkeleton from "./Skeletons/MarketsSkeleton"
 
 interface CryptoData {
   symbol: string
@@ -22,6 +23,7 @@ interface CryptoData {
 
 export default function CryptoList() {
   const [cryptoData, setCryptoData] = useState<CryptoData[]>([])
+  const [loading , setLoading] = useState(true);
   const [sortColumn, setSortColumn] = useState<keyof CryptoData>("market_cap_rank")
   const [sortDirection, setSortDirection] = useState<"asc" | "desc">("asc")
   const [activeTab, setActiveTab] = useState("all")
@@ -30,6 +32,7 @@ export default function CryptoList() {
   const fetchData = useCallback(async () => {
     try {
       const data = await getCrypto()
+      setLoading(false)
       const formattedData: CryptoData[] = data.map((item: any) => ({
         image: item.image,
         market_cap_rank: item.market_cap_rank,
@@ -133,6 +136,8 @@ export default function CryptoList() {
       </Table>
     </div>
   )
+  
+  if(loading) return <CryptoListSkeleton/>
 
   return (
     <Tabs value={activeTab} onValueChange={handleTabClick} className="w-full">

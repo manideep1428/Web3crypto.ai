@@ -11,16 +11,24 @@ import { Switch } from "@/components/ui/switch";
 import { toast } from "./ui/use-toast";
 import { ToastAction } from "@radix-ui/react-toast";
 import { useRouter } from "next/navigation";
-import { BuyCrypto } from "@/app/(server)/api/crypto/BuyCrypto";
-import { sellCrypto } from "@/app/(server)/api/crypto/SellCrypto";
+
+import axios from "axios";
+import { useDispatch, useSelector } from "react-redux";
+import { RootState } from "@/store/store";
+import {
+  setPrice,
+  setQuantity,
+  setActiveTab,
+  setOrderType,
+  setMarketPrice,
+} from "@/store/slices/cryptoOrders";
 
 export function OrderUI({ market }: { market: string }) {
-  const [price, setPrice] = useState("");
-  const [quantity, setQuantity] = useState("");
-  const [activeTab, setActiveTab] = useState("buy");
-  const [orderType, setOrderType] = useState("limit");
+  const dispatch = useDispatch();
+  const { price, quantity, activeTab, orderType, marketPrice } = useSelector(
+    (state: RootState) => state.order
+  );
   const [image, setImage] = useState("");
-  const [marketPrice, setMarketPrice] = useState(0);
   const [loading, setLoading] = useState(false);
   const ws = useRef<WebSocket | null>(null);
   const router = useRouter();
@@ -38,7 +46,7 @@ export function OrderUI({ market }: { market: string }) {
 
     ws.current.onmessage = (event) => {
       const data = JSON.parse(event.data);
-      setMarketPrice(parseFloat(data.c));
+      dispatch(setMarketPrice(parseFloat(data.c)));
     };
 
     return () => {
@@ -46,69 +54,75 @@ export function OrderUI({ market }: { market: string }) {
         ws.current.close();
       }
     };
-  }, [market]);
+  }, [market, dispatch]);
 
   const handleOrder = async () => {
     try {
+      setLoading(true);
       if (activeTab === "buy") {
-        const response = await BuyCrypto(market, quantity);
-        if(response === "Success"){
-          toast({
-            title: "Order placed",
-            description: `You have successfully placed a buy order for ${quantity} ${market} at ${price} USD.`,
-            action: (
-              <ToastAction
-                altText="See the order details"
-                onClick={() => router.push("/orders")}
-              >
-                {" "}
-                Details
-              </ToastAction>
-            ),
-          });
-        }
+        const response = await axios.post("/api/buy-crypto", {
+          market,
+          quantity,
+          price,
+        });
+        if (!response.data.sucess) return new Error(response.data.message);
+        toast({
+          title: "Order placed",
+          description: `You have successfully placed a buy order for ${quantity} ${market} at ${price} USD.`,
+          action: (
+            <ToastAction
+              altText="See the order details"
+              onClick={() => router.push("/orders")}
+            >
+              Details
+            </ToastAction>
+          ),
+        });
       } else if (activeTab === "sell") {
-        const res = await sellCrypto(market, quantity);
-        if(res === "Done"){
-          toast({
-            title: "Order Placed",
-            description: `You have successfully sold an order for ${quantity} ${market} at ${price} USD.`,
-          });
-        }
+        const res = await axios.post("/api/sell-crypto", {
+          market,
+          quantity,
+          price,
+        });
+        if (!res.data.success) return new Error(res.data.message);
+        toast({
+          title: "Order Placed",
+          description: `You have successfully sold an order for ${quantity} ${market} at ${price} USD.`,
+        });
       }
     } catch (error) {
       toast({
-        title:"Error Occcured",
-        description:"Please Try again",
-        variant:"destructive",
-        action :(
-          <ToastAction altText="try again"> Try again </ToastAction>
-        )
-      })
+        title: "Error Occurred",
+        description: "Please Try again",
+        variant: "destructive",
+        action: <ToastAction altText="try again"> Try again </ToastAction>,
+      });
+    } finally {
+      setLoading(false);
     }
   };
 
   const handlePriceChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const newPrice = e.target.value;
-    setPrice(newPrice);
+    dispatch(setPrice(newPrice));
     if (newPrice && quantity) {
       const newQuantity = (
         (parseFloat(quantity) * marketPrice) /
         parseFloat(newPrice)
       ).toFixed(8);
-      setQuantity(newQuantity);
+      dispatch(setQuantity(newQuantity));
     }
   };
 
   const handleQuantityChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const newQuantity = e.target.value;
-    setQuantity(newQuantity);
+    dispatch(setQuantity(newQuantity));
     if (newQuantity && price) {
       const newPrice = (
         (parseFloat(price) * parseFloat(newQuantity)) /
         parseFloat(quantity)
       ).toFixed(8);
-      setPrice(newPrice);
+      dispatch(setPrice(newPrice));
     }
   };
 
@@ -124,7 +138,12 @@ export function OrderUI({ market }: { market: string }) {
 
   return (
     <Card className="w-full max-w-md mx-auto font-bold p-4 border-none rounded-none">
-      <Tabs value={activeTab} onValueChange={setActiveTab}>
+      <Tabs
+        value={activeTab}
+        onValueChange={(value) =>
+          dispatch(setActiveTab(value as "buy" | "sell"))
+        }
+      >
         <TabsList className="grid w-full grid-cols-2">
           <TabsTrigger
             value="buy"
@@ -143,20 +162,20 @@ export function OrderUI({ market }: { market: string }) {
           <div className="space-y-4">
             <div className="flex justify-between text-sm">
               <span>Available Balance</span>
-              <span>13442.94 USDC</span>
+              <span> USDC</span>
             </div>
             <div>
               <Label htmlFor="orderType">Order Type</Label>
               <div className="flex gap-4 mt-2">
                 <Button
                   variant={orderType === "limit" ? "default" : "outline"}
-                  onClick={() => setOrderType("limit")}
+                  onClick={() => dispatch(setOrderType("limit"))}
                 >
                   Limit
                 </Button>
                 <Button
                   variant={orderType === "market" ? "default" : "outline"}
-                  onClick={() => setOrderType("market")}
+                  onClick={() => dispatch(setOrderType("market"))}
                 >
                   Market
                 </Button>
@@ -217,10 +236,10 @@ export function OrderUI({ market }: { market: string }) {
             >
               {activeTab === "buy"
                 ? loading
-                  ? ""
+                  ? "Buying..."
                   : "Buy"
                 : loading
-                ? ""
+                ? "Selling..."
                 : "Sell"}
             </Button>
             <div className="flex items-center space-x-4">

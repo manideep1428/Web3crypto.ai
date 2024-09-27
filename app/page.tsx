@@ -19,7 +19,7 @@ export default function CryptoLanding() {
   const router = useRouter();
   const session = useSession();
 
-  if (session) {
+  if (session.data?.user) {
     router.replace("/markets");
   }
 

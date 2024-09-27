@@ -1,8 +1,6 @@
-'use client'
-import { SessionProvider } from 'next-auth/react'
 import './globals.css'
-import { ThemeProvider } from './themeProvider'
 import NextTopLoader from 'nextjs-toploader';
+import { Providers } from './Providers';
 export default function RootLayout({
   children,
 }: {
@@ -12,17 +10,10 @@ export default function RootLayout({
   return (
       <html lang="en">
         <body>
-          <SessionProvider> 
-            <ThemeProvider
-            attribute="class"
-            defaultTheme="system"
-            enableSystem
-            disableTransitionOnChange
-            >
            <NextTopLoader/>
+           <Providers>
            {children}
-           </ThemeProvider> 
-          </SessionProvider>
+           </Providers>
         </body>
       </html>
   )

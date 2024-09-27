@@ -4,6 +4,7 @@ const useOnlineStatus = () => {
   const [isOnline, setIsOnline] = useState(true);
 
   useEffect(() => {
+   setInterval(()=>{
     if (typeof window !== 'undefined') {
       setIsOnline(navigator.onLine);
 
@@ -19,6 +20,7 @@ const useOnlineStatus = () => {
         window.removeEventListener('offline', updateOnlineStatus);
       };
     }
+   }, 10020)
   }, []);
 
   return isOnline;

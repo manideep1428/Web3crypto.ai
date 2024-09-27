@@ -14,7 +14,7 @@ model User {
   emailVerified DateTime?
   image         String?
   accounts      Account[]
-  amount        String @default("100")
+  balance       Int             @default(100)
   sessions      Session[]
   Authenticator Authenticator[]
   crypto        Crypto[]
@@ -90,13 +90,13 @@ model Order {
 model Crypto {
   id             Int     @id @default(autoincrement())
   name           String
-  buyAt          String
-  soldAt         String
+  buyAt          Int
+  soldAt         Int
   timeBuyAt      String
   amount         String
   timeSoldAt     String?
   transactionId  Int     @default(autoincrement())
-  transactionFee String
+  transactionFee Int
   orders         Order[]
   userId         String
   user           User    @relation(fields: [userId], references: [id])
