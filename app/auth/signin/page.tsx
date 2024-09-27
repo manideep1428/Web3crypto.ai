@@ -2,11 +2,14 @@
 
 import React from 'react'
 import { motion } from 'framer-motion'
-import { signIn } from 'next-auth/react'
+import { signIn, useSession } from 'next-auth/react'
 import { FcGoogle } from 'react-icons/fc'
 import { Button } from "@/components/ui/button"
+import { useRouter } from 'next/navigation'
 
 export default function GoogleSignIn() {
+  const session  =  useSession();
+  const router  = useRouter();
   const containerVariants = {
     hidden: { opacity: 0, scale: 0.8 },
     visible: { 
@@ -25,7 +28,7 @@ export default function GoogleSignIn() {
     hidden: { opacity: 0, y: 20 },
     visible: { opacity: 1, y: 0 }
   }
-
+  if(session.data?.user) router.push('/markets')
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-500 to-purple-600 p-4">
       <motion.div
