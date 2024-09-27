@@ -19,8 +19,8 @@ export default function CryptoLanding() {
   const router = useRouter();
   const session = useSession();
 
-  if (session.status === "authenticated") {
-    router.push("/markets");
+  if (session) {
+    router.replace("/markets");
   }
 
   const containerVariants = {
