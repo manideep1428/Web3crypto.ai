@@ -18,7 +18,7 @@ export default function useBalance() {
             email: session?.user?.email,
           },
         });
-        const balance = user?.amount
+        const balance = user?.balance
         return balance
       }
       getBalance().then((balance) => {
