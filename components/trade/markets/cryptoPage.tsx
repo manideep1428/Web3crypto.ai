@@ -8,7 +8,7 @@ import { ArrowDown, ArrowUp } from "lucide-react"
 import { getCrypto } from "@/app/utils/ServerProps"
 import Image from "next/image"
 import { useRouter } from "next/navigation"
-import CryptoListSkeleton from "./Skeletons/MarketsSkeleton"
+import CryptoListSkeleton from "@/components/Skeletons/MarketsSkeleton"
 
 interface CryptoData {
   symbol: string
