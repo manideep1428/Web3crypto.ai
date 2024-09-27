@@ -3,7 +3,7 @@
 import { Card, CardContent } from "@/components/ui/card"
 import { ArrowUpIcon, ArrowDownIcon } from 'lucide-react'
 import UseMarketWebsockets from "@/hooks/MarketWebsockets" 
-import { MarketBarSkeleton } from "./Skeletons/MarketBarSkeleton"
+import { MarketBarSkeleton } from "@/components/Skeletons/MarketBarSkeleton"
 
 export function MarketBar({ market}: { market :  string }) {
   const { marketData, priceChangeColor } = UseMarketWebsockets(market)
