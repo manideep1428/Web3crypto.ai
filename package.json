@@ -49,6 +49,7 @@
     "recharts": "^2.12.7",
     "sharp": "^0.33.5",
     "short-uuid": "^5.2.0",
+    "stripe": "^16.12.0",
     "tailwind-merge": "^2.4.0",
     "tailwindcss-animate": "^1.0.7",
     "yup": "^1.4.0",

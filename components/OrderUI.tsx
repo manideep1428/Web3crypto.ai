@@ -62,7 +62,7 @@ export function OrderUI({ market }: { market: string }) {
                 onClick={() => router.push("/orders")}
               >
                 {" "}
-                Open Order
+                Details
               </ToastAction>
             ),
           });
