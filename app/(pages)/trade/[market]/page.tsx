@@ -3,16 +3,16 @@
 import { useState, useEffect } from "react";
 import useWebSocket from "react-use-websocket";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Ask } from "@/components/depth/AskTable";
-import { Bid } from "@/components/depth/BidTable";
-import { OrderUI } from "@/components/OrderUI";
+import { Ask } from "@/components/trade/markets/AskTable";
+import { Bid } from "@/components/trade/markets/BidTable";
 import { useParams } from "next/navigation";
-import { MarketBar } from "@/components/MarketBar";
-import TradeViewChart from "@/components/TradeView";
 import { Skeleton } from "@/components/ui/skeleton";
 import { TradeViewChartSkeleton } from "@/components/Skeletons/TradingViewSkeleton";
 import { AskSkeleton } from "@/components/Skeletons/AskBidSkeleton";
 import useOnlineStatus from "@/hooks/onlineChecker";
+import TradeViewChart from "@/components/trade/markets/TradeView";
+import { OrderUI } from "@/components/trade/markets/OrderUI";
+import { MarketBar } from "@/components/trade/markets/MarketBar";
 
 type Order = [string, string];
 type OrderBookUpdate = {
@@ -100,7 +100,7 @@ export default function Markets() {
 
         <div className="flex h-full justify-items-end">
           {isLoading ? (
-            <Skeleton className="h-[400px] w-[300px]" />
+            <Skeleton className="h-[500px] w-[300px]" />
           ) : (
             <OrderUI market={market as string} />
           )}

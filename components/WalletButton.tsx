@@ -1,9 +1,6 @@
 'use client'
-import { prisma } from "@/lib/prisma";
 import { Wallet } from "lucide-react";
-import { useSession } from "next-auth/react";
-import { useEffect, useState } from "react";
-import useBalace from "@/hooks/balancechecker"
+import useBalance from "@/hooks/balancechecker";
 
 export default function Walletbutton() {
   const { loading , balance } = useBalance()

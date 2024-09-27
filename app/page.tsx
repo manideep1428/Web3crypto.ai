@@ -12,7 +12,7 @@ import { useRouter } from "next/navigation";
 import { motion, useAnimationControls } from "framer-motion";
 import { useEffect } from "react";
 import { useSession } from "next-auth/react";
-import Footer from "@/components/Footer";
+import Footer from "@/components/core/Footer";
 
 export default function CryptoLanding() {
   const controls = useAnimationControls();

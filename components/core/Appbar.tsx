@@ -2,15 +2,15 @@
 
 import { useState } from "react";
 import { usePathname, useRouter } from "next/navigation";
-import { SuccessButton } from "./core/Button";
+import { SuccessButton } from "./Button";
 import { HandCoins, Menu, Wallet, X } from "lucide-react";
-import UserDetails from "./UserDetails";
-import DarkModeToggle from "./DarkModeToggle";
+import UserDetails from "../account/UserDetails";
+import DarkModeToggle from "../DarkModeToggle";
 import { signIn, useSession } from "next-auth/react";
-import { Input } from "./ui/input";
-import { Button } from "./ui/button";
-import Walletbutton from "./WalletButton";
-import { Skeleton } from "./ui/skeleton";
+import { Input } from "../ui/input";
+import { Button } from "../ui/button";
+import Walletbutton from "../WalletButton";
+import { Skeleton } from "../ui/skeleton";
 
 export const Appbar = () => {
   const route = usePathname();

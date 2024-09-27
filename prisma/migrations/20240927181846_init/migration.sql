@@ -1,3 +1,9 @@
+-- CreateEnum
+CREATE TYPE "TranscationType" AS ENUM ('Buy', 'Sell');
+
+-- CreateEnum
+CREATE TYPE "OrderStatus" AS ENUM ('Pending', 'Sucess', 'Failed');
+
 -- CreateTable
 CREATE TABLE "User" (
     "id" TEXT NOT NULL,
@@ -67,8 +73,9 @@ CREATE TABLE "Authenticator" (
 CREATE TABLE "Order" (
     "id" TEXT NOT NULL,
     "userId" TEXT NOT NULL,
-    "amount" TEXT NOT NULL,
-    "status" TEXT NOT NULL,
+    "transcationType" "TranscationType" NOT NULL,
+    "amount" INTEGER NOT NULL,
+    "status" "OrderStatus" NOT NULL,
     "cryptoId" INTEGER NOT NULL,
 
     CONSTRAINT "Order_pkey" PRIMARY KEY ("id")
@@ -77,14 +84,13 @@ CREATE TABLE "Order" (
 -- CreateTable
 CREATE TABLE "Crypto" (
     "id" SERIAL NOT NULL,
-    "name" TEXT NOT NULL,
-    "buyAt" TEXT NOT NULL,
-    "soldAt" TEXT NOT NULL,
+    "currency" TEXT NOT NULL,
+    "buyAt" INTEGER NOT NULL,
+    "soldAt" INTEGER,
     "timeBuyAt" TEXT NOT NULL,
-    "amount" TEXT NOT NULL,
     "timeSoldAt" TEXT,
     "transactionId" SERIAL NOT NULL,
-    "transactionFee" TEXT NOT NULL,
+    "transactionFee" INTEGER NOT NULL,
     "userId" TEXT NOT NULL,
 
     CONSTRAINT "Crypto_pkey" PRIMARY KEY ("id")

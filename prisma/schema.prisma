@@ -18,7 +18,7 @@ model User {
   sessions      Session[]
   Authenticator Authenticator[]
   crypto        Crypto[]
-  order         Order[]
+  orders        Order[]
   createdAt     DateTime        @default(now())
   updatedAt     DateTime        @updatedAt
 }
@@ -78,22 +78,33 @@ model Authenticator {
 }
 
 model Order {
-  id       String @id @default(cuid())
-  user     User   @relation(fields: [userId], references: [id])
-  userId   String
-  amount   String
-  status   String
-  crypto   Crypto @relation(fields: [cryptoId], references: [id])
-  cryptoId Int
+  id              String          @id @default(cuid())
+  user            User            @relation(fields: [userId], references: [id])
+  userId          String
+  transactionType TransactionType
+  amount          Int
+  status          OrderStatus
+  crypto          Crypto          @relation(fields: [cryptoId], references: [id])
+  cryptoId        Int
+}
+
+enum TransactionType {
+  Buy
+  Sell
+}
+
+enum OrderStatus {
+  Pending
+  Success
+  Failed
 }
 
 model Crypto {
   id             Int     @id @default(autoincrement())
-  name           String
+  currency       String
   buyAt          Int
-  soldAt         Int
+  soldAt         Int?
   timeBuyAt      String
-  amount         String
   timeSoldAt     String?
   transactionId  Int     @default(autoincrement())
   transactionFee Int

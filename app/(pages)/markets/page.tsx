@@ -3,8 +3,8 @@
 import { useState } from "react"
 import { Button } from "@/components/ui/button"
 import { ChevronRight } from "lucide-react"
-import NavSidebar from "@/components/Dashborad"
-import CryptoList from "@/components/cryptoPage"
+import NavSidebar from "@/components/core/Dashborad"
+import CryptoList from "@/components/trade/markets/cryptoPage"
 
 export default function CryptoDashboard() {
   const [isOpen, setIsOpen] = useState(true)

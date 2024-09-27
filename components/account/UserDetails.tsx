@@ -6,13 +6,13 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from "./ui/dropdown-menu";
+} from "../ui/dropdown-menu";
 import { signOut } from "next-auth/react";
 import { useSession } from "next-auth/react";
 import { LogOut, UserRound } from "lucide-react";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
-import { Skeleton } from "./ui/skeleton";
+import { Skeleton } from "../ui/skeleton";
 
 const dropDownData = [
   {
