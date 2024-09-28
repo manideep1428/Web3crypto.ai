@@ -63,7 +63,7 @@ export function OrderUI({ market }: { market: string }) {
       if (activeTab === "buy") {
         const response = await axios.post("/api/buy-crypto", {
           market,
-          quantity,
+          marketPrice,
           price,
         });
         if (!response.data.sucess) return new Error(response.data.message);
@@ -82,7 +82,7 @@ export function OrderUI({ market }: { market: string }) {
       } else if (activeTab === "sell") {
         const res = await axios.post("/api/sell-crypto", {
           market,
-          quantity,
+          marketPrice,
           price,
         });
         if (!res.data.success) return new Error(res.data.message);
@@ -129,7 +129,7 @@ export function OrderUI({ market }: { market: string }) {
 
   const calculateFee = () => {
     const total = parseFloat(price) * parseFloat(quantity);
-    return isNaN(total) ? "0.00000000" : (total * 0.002).toFixed(8); // 0.2% fee
+    return isNaN(total) ? "0.00000000" : (total * 0.02).toFixed(8); 
   };
 
   const calculateTotal = () => {

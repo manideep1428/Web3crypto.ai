@@ -14,11 +14,12 @@ export async function POST(request: NextRequest) {
     );
   }
 
-  let result = null; // Declare result outside try block
+  let result = null;
 
   try {
-    const { crypto, amount } = await request.json();
-
+    const { market , price , marketPrice } = await request.json();
+     const crypto = market 
+     const  amount = Number(price)
     if (!crypto || !amount) {
       return NextResponse.json(
         { success: false, message: "Missing crypto or amount" },
@@ -60,7 +61,7 @@ export async function POST(request: NextRequest) {
         data: {
           userId: user.id,
           currency: crypto,
-          buyAt: amount,
+          buyAt: Number(marketPrice) - Number(marketPrice * 0.02)  ,
           timeBuyAt: new Date().toISOString(),
           transactionFee: amountNum * 0.2,
           soldAt: 0,

@@ -17,8 +17,9 @@ export async function POST(request: NextRequest) {
   let result = null; 
 
   try {
-    const { crypto, amount } = await request.json();
-
+    const { market, price , marketPrice } = await request.json();
+     const crypto = market
+     const amount = price
     if (!crypto || !amount) {
       return NextResponse.json(
         { success: false, message: "Missing crypto or amount" },
@@ -52,7 +53,7 @@ export async function POST(request: NextRequest) {
     }
 
     const cryptoAmount = userCrypto.buyAt;
-    const amountNum = parseFloat(amount);
+    const amountNum = marketPrice * 0.99;
 
     if (isNaN(amountNum) || amountNum <= 0) {
       return NextResponse.json(

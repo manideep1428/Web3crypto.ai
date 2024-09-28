@@ -1,3 +1,4 @@
+import { authOptions } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import { getServerSession } from "next-auth";
 import { useEffect, useState } from "react";
@@ -9,7 +10,7 @@ export default function useBalance() {
   useEffect(() => {
 
     async function getBalance() {
-        const session = await getServerSession();
+        const session = await getServerSession(authOptions);
         if (!session?.user?.email) {
           return
         }
