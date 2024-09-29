@@ -13,16 +13,6 @@ export default function CryptoDashboard() {
   return (
     <div className="relative flex h-screen overflow-hidden">
       <main className="flex-1 overflow-auto p-4">
-        <Button
-          variant="outline"
-          size="icon"
-          onClick={toggleSidebar}
-          className="mb-4 lg:hidden"
-          aria-label={isOpen ? "Close sidebar" : "Open sidebar"}
-        >
-          <ChevronRight className="h-4 w-4" />
-        </Button>
-
         <div className="rounded-lg shadow p-6 dark:shadow-amber-50">
           <CryptoList />
         </div>
