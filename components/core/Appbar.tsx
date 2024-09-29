@@ -1,9 +1,7 @@
-'use client'
-
 import { useState } from "react"
 import { usePathname, useRouter } from "next/navigation"
 import Link from "next/link"
-import { HandCoins, Menu } from "lucide-react"
+import { HandCoins, Menu, MenuIcon } from "lucide-react"
 import { signIn, useSession } from "next-auth/react"
 import { Input } from "../ui/input"
 import { Button } from "../ui/button"
@@ -12,11 +10,11 @@ import Walletbutton from "../WalletButton"
 import DarkModeToggle from "../DarkModeToggle"
 
 
-export const Appbar = () => {
+export const Appbar = ({ toggleSidebar }: { toggleSidebar: () => void }) => {
   const pathname = usePathname()
   const router = useRouter()
   const [menuOpen, setMenuOpen] = useState(false)
-  const { data: session  } = useSession()
+  const { data: session } = useSession()
 
   const handleDeposit = () => {
     if (session?.user) {
@@ -39,6 +37,12 @@ export const Appbar = () => {
   return (
     <div className="text-black bg-white dark:text-white dark:bg-black border-b border-slate-800">
       <div className="flex justify-between items-center p-2">
+        <button
+          className="fixed top-20 left-4 z-40 p-2 bg-background border rounded-md"
+          onClick={toggleSidebar}
+        >
+          <MenuIcon className="h-6 w-6" />
+        </button>
         <div className="flex items-center">
           <Link href="/markets" className="text-xl pl-4 cursor-pointer font-semibold dark:text-white">
             <i>WebCrypto.ai</i>
@@ -63,11 +67,11 @@ export const Appbar = () => {
             className="max-w-sm"
           />
           <div className="mr-2">
-          {session?.user ? (
-            <UserDetails />
-          ) : (
-            <Button onClick={() => signIn("google")}>Login</Button>
-          )}
+            {session?.user ? (
+              <UserDetails />
+            ) : (
+              <Button onClick={() => signIn("google")}>Login</Button>
+            )}
           </div>
           <DarkModeToggle />
         </div>
@@ -80,7 +84,7 @@ export const Appbar = () => {
       {menuOpen && (
         <div className="md:hidden flex flex-col p-4 gap-3">
           <NavItem href="/markets">Markets</NavItem>
-          <NavItem href="/trade/SOL_USDC">Trade</NavItem>
+          <NavItem href="/trade/btcusdt">Trade</NavItem>
           <Button
             variant="outline"
             className="text-orange-500 hover:bg-orange-500 hover:text-white"
