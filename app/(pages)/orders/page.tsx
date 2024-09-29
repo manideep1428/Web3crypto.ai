@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react'
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
-import { CheckCircleIcon, XCircleIcon, ArrowUpCircleIcon, ArrowDownCircleIcon, PackageIcon } from 'lucide-react'
+import { CheckCircle, XCircle, TrendingUp, TrendingDown, Package2, Clock } from 'lucide-react'
 import { Skeleton } from "@/components/ui/skeleton"
 
 type Order = {
@@ -41,7 +41,12 @@ export default function OrderDisplay() {
     fetchOrders()
   }, [])
 
-  if (error) return <div className="text-center text-red-500">{error}</div>
+  if (error) return (
+    <div className="text-center p-4 bg-red-100 text-red-800 rounded-md">
+      <XCircle className="w-6 h-6 mx-auto mb-2" />
+      <p>{error}</p>
+    </div>
+  )
 
   if (loading) {
     return (
@@ -65,10 +70,10 @@ export default function OrderDisplay() {
     return (
       <Card className="w-full max-w-md mx-auto">
         <CardContent className="flex flex-col items-center justify-center p-6">
-          <PackageIcon className="w-12 h-12 text-muted-foreground mb-4" />
+          <Package2 className="w-12 h-12 text-muted-foreground mb-4" />
           <h2 className="text-xl font-semibold mb-2">No Orders Placed</h2>
           <p className="text-center text-muted-foreground">
-            {"You haven't placed any orders yet. Start trading to see your order history here."}
+           {" You haven't placed any orders yet. Start trading to see your order history here."}
           </p>
         </CardContent>
       </Card>
@@ -79,7 +84,7 @@ export default function OrderDisplay() {
     <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
       {orders.map((order) => (
         <Card key={order.id} className="overflow-hidden">
-          <CardHeader className="bg-primary text-primary-foreground">
+          <CardHeader className={`${order.transactionType === 'Buy' ? 'bg-green-100' : 'bg-red-100'} text-foreground`}>
             <CardTitle className="flex items-center justify-between">
               <span>{order.crypto.currency}</span>
               <Badge variant={order.transactionType === 'Buy' ? 'default' : 'secondary'}>
@@ -89,18 +94,21 @@ export default function OrderDisplay() {
           </CardHeader>
           <CardContent className="pt-4">
             <div className="flex items-center justify-between mb-2">
-              <span className="text-lg font-semibold">${order.amount}</span>
-              {order.status === 'Success' && <CheckCircleIcon className="text-green-500" />}
-              {order.status === 'Failed' && <XCircleIcon className="text-red-500" />}
-              {order.status === 'Pending' && <div className="text-yellow-500">Pending</div>}
+              <span className="text-lg font-semibold">${order.amount.toFixed(2)}</span>
+              {order.status === 'Success' && <CheckCircle className="text-green-500 w-5 h-5" />}
+              {order.status === 'Failed' && <XCircle className="text-red-500 w-5 h-5" />}
+              {order.status === 'Pending' && <Clock className="text-yellow-500 w-5 h-5" />}
             </div>
             <div className="flex items-center text-sm text-muted-foreground">
               {order.transactionType === 'Buy' ? (
-                <ArrowUpCircleIcon className="mr-1 h-4 w-4 text-green-500" />
+                <TrendingUp className="mr-1 h-4 w-4 text-green-500" />
               ) : (
-                <ArrowDownCircleIcon className="mr-1 h-4 w-4 text-red-500" />
+                <TrendingDown className="mr-1 h-4 w-4 text-red-500" />
               )}
-              {order.transactionType === 'Buy' ? 'Bought' : 'Sold'}
+              <span>{order.transactionType === 'Buy' ? 'Bought' : 'Sold'}</span>
+              <span className="ml-2 px-2 py-1 bg-gray-100 rounded-full text-xs">
+                {order.status}
+              </span>
             </div>
           </CardContent>
         </Card>

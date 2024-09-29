@@ -1,79 +1,60 @@
-"use client";
+'use client'
 
-import { useState } from "react";
-import { usePathname, useRouter } from "next/navigation";
-import { HandCoins, Menu, X } from "lucide-react";
-import UserDetails from "../account/UserDetails";
-import DarkModeToggle from "../DarkModeToggle";
-import { signIn, useSession } from "next-auth/react";
-import { Input } from "../ui/input";
-import { Button } from "../ui/button";
-import Walletbutton from "../WalletButton";
-import { Skeleton } from "../ui/skeleton";
+import { useState } from "react"
+import { usePathname, useRouter } from "next/navigation"
+import Link from "next/link"
+import { HandCoins, Menu } from "lucide-react"
+import { signIn, useSession } from "next-auth/react"
+import { Input } from "../ui/input"
+import { Button } from "../ui/button"
+import UserDetails from "../account/UserDetails"
+import Walletbutton from "../WalletButton"
+import DarkModeToggle from "../DarkModeToggle"
+
 
 export const Appbar = () => {
-  const route = usePathname();
-  const router = useRouter();
-  const [menuOpen, setMenuOpen] = useState(false);
-  const { data , status } = useSession();
+  const pathname = usePathname()
+  const router = useRouter()
+  const [menuOpen, setMenuOpen] = useState(false)
+  const { data: session  } = useSession()
 
   const handleDeposit = () => {
-    if (data?.user) {
-      router.push("/deposit");
+    if (session?.user) {
+      router.push("/deposit")
     } else {
-      console.log("Please Signin");
+      console.log("Please Sign in")
     }
-  };
+  }
 
-  const NavItem = ({ href, children }: any) => (
-    <div
-      className={`text-sm pt-1 cursor-pointer ${
-        route.startsWith(href) ? "text-white" : "text-slate-500"
-      }`}
-      onClick={() => {
-        router.push(href);
-        setMenuOpen(false);
-      }}
+  const NavItem = ({ href, children }: { href: string; children: React.ReactNode }) => (
+    <Link
+      href={href}
+      className={`text-sm pt-1 cursor-pointer ${pathname.startsWith(href) ? "text-white" : "text-slate-500"
+        }`}
     >
       {children}
-    </div>
-  );
+    </Link>
+  )
 
   return (
     <div className="text-black bg-white dark:text-white dark:bg-black border-b border-slate-800">
       <div className="flex justify-between items-center p-2">
         <div className="flex items-center">
-          <div
-            className="text-xl pl-4 cursor-pointer font-semibold dark:text-white"
-            onClick={() => router.push("/markets")}
-          >
-            <i> WebCrypto.ai </i>
-          </div>
+          <Link href="/markets" className="text-xl pl-4 cursor-pointer font-semibold dark:text-white">
+            <i>WebCrypto.ai</i>
+          </Link>
           <div className="hidden md:flex m-auto gap-6 p-4">
             <NavItem href="/markets">Markets</NavItem>
             <NavItem href="/trade/SOL_USDC">Trade</NavItem>
           </div>
         </div>
-        <div className="md:hidden flex items-center mr-3 gap-4">
-          {status === "loading" ?  <Skeleton className="rounded-full w-12 h-12"/> : data?.user ? (
-            <div className="mr-2">
-              <UserDetails />
-            </div>
-          ) : (
-            <Button onClick={() => signIn("google")} className="mr-2">
-              Login
-            </Button>
-          ) }
-          <button onClick={() => setMenuOpen(!menuOpen)}>
-            {menuOpen ? <X size={24} /> : <Menu size={24} />}
-          </button>
-        </div>
-        <div className="hidden md:flex flex-row justify-center gap-5">
+        <div className="hidden md:flex flex-row justify-center gap-5 items-center">
           <Button
-            className="bg-transparent text-orange-500 p-2 hover:bg-orange-500 hover:text-white"
+            variant="outline"
+            className="text-orange-500 hover:bg-orange-500 hover:text-white"
             onClick={handleDeposit}
           >
-            <HandCoins />
+            <HandCoins className="mr-2 h-4 w-4" />
             Deposit
           </Button>
           <Input
@@ -81,35 +62,37 @@ export const Appbar = () => {
             placeholder="Search markets"
             className="max-w-sm"
           />
-          {data?.user && (
-            <Walletbutton/>
-          )}
-          {data?.user ? (
-            <div className="flex m-auto gap-2">
-              <UserDetails />
-            </div>
+          <div className="mr-2">
+          {session?.user ? (
+            <UserDetails />
           ) : (
-            <Button onClick={async () => await signIn("google")}>Login</Button>
+            <Button onClick={() => signIn("google")}>Login</Button>
           )}
+          </div>
+          <DarkModeToggle />
+        </div>
+        <div className="md:hidden">
+          <Button variant="ghost" size="icon" onClick={() => setMenuOpen(!menuOpen)}>
+            <Menu />
+          </Button>
         </div>
       </div>
       {menuOpen && (
-        <div className="md:hidden flex flex-col p-4 gap-3 text-black bg-white dark:text-white dark:bg-black">
+        <div className="md:hidden flex flex-col p-4 gap-3">
           <NavItem href="/markets">Markets</NavItem>
           <NavItem href="/trade/SOL_USDC">Trade</NavItem>
-          <DarkModeToggle />
-          <div
-            className="flex bg-transparent text-orange-500 p-2 hover:bg-orange-500 hover:text-white"
+          <Button
+            variant="outline"
+            className="text-orange-500 hover:bg-orange-500 hover:text-white"
             onClick={handleDeposit}
           >
-            <HandCoins />
+            <HandCoins className="mr-2 h-4 w-4" />
             Deposit
-          </div>
-          {data?.user && (
-            <Walletbutton/>
-          )}
+          </Button>
+          {session?.user && <Walletbutton />}
+          <DarkModeToggle />
         </div>
       )}
     </div>
-  );
-};
+  )
+}

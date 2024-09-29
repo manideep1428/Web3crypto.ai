@@ -1,28 +1,31 @@
 'use client'
-import { Button } from "@/components/ui/button";
+
+import { Button } from "@/components/ui/button"
 import {
   ArrowRight,
   Bitcoin,
   LineChart,
   LockKeyholeOpen,
   BrainCircuit,
-} from "lucide-react";
-import Link from "next/link";
-import { useRouter } from "next/navigation";
-import { motion, useAnimationControls } from "framer-motion";
-import { useEffect } from "react";
-import { useSession } from "next-auth/react";
-import Footer from "@/components/core/Footer";
+  Menu,
+} from "lucide-react"
+import Link from "next/link"
+import { useRouter } from "next/navigation"
+import { motion, useAnimationControls } from "framer-motion"
+import { useEffect, useState } from "react"
+import { useSession } from "next-auth/react"
+import Footer from "@/components/core/Footer"
 
-export default function CryptoLanding() {
-  const controls = useAnimationControls();
-  const router = useRouter();
-  const session = useSession();
+export default function Component() {
+  const controls = useAnimationControls()
+  const router = useRouter()
+  const session = useSession()
+  const [isMenuOpen, setIsMenuOpen] = useState(false)
 
   if (session.data?.user) {
-    router.replace("/markets");
+    router.push("/markets")
   }
-
+  
   const containerVariants = {
     hidden: { opacity: 0 },
     visible: {
@@ -32,7 +35,7 @@ export default function CryptoLanding() {
         delayChildren: 0.3,
       },
     },
-  };
+  }
 
   const itemVariants = {
     hidden: { y: 20, opacity: 0 },
@@ -44,7 +47,7 @@ export default function CryptoLanding() {
         stiffness: 100,
       },
     },
-  };
+  }
 
   useEffect(() => {
     controls.start({
@@ -54,8 +57,8 @@ export default function CryptoLanding() {
         repeat: Infinity,
         ease: "linear",
       },
-    });
-  }, [controls]);
+    })
+  }, [controls])
 
   return (
     <div className="flex flex-col min-h-screen bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100">
@@ -63,8 +66,9 @@ export default function CryptoLanding() {
         initial={{ y: -50, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
         transition={{ duration: 0.5 }}
-        className="bg-home-image px-4 lg:px-6 h-14 flex items-center border-b border-gray-200 dark:border-gray-800"
+        className="bg-home-image px-4 lg:px-6 h-14 flex items-center justify-between border-b border-gray-200 dark:border-gray-800"
       >
+        <div className="flex items-center">
           <Bitcoin className="h-6 w-6 text-yellow-500" />
           <motion.span
             initial={{ opacity: 0 }}
@@ -74,7 +78,8 @@ export default function CryptoLanding() {
           >
             WebCrypto.ai
           </motion.span>
-        <nav className="ml-auto flex gap-4 sm:gap-6">
+        </div>
+        <nav className="hidden md:flex gap-4 sm:gap-6">
           {["Features", "Pricing", "About", "Contact"].map((item, index) => (
             <motion.div
               key={item}
@@ -91,7 +96,33 @@ export default function CryptoLanding() {
             </motion.div>
           ))}
         </nav>
+        <Button
+          variant="ghost"
+          size="icon"
+          className="md:hidden"
+          onClick={() => setIsMenuOpen(!isMenuOpen)}
+        >
+          <Menu className="h-6 w-6" />
+        </Button>
       </motion.header>
+      {isMenuOpen && (
+        <motion.nav
+          initial={{ opacity: 0, y: -20 }}
+          animate={{ opacity: 1, y: 0 }}
+          exit={{ opacity: 0, y: -20 }}
+          className="md:hidden bg-white dark:bg-gray-900 py-2"
+        >
+          {["Features", "Pricing", "About", "Contact"].map((item, index) => (
+            <Link
+              key={item}
+              className="block px-4 py-2 text-sm font-medium hover:bg-gray-100 dark:hover:bg-gray-800"
+              href="#"
+            >
+              {item}
+            </Link>
+          ))}
+        </motion.nav>
+      )}
       <main className="flex-1">
         <section className="w-full py-12 md:py-24 lg:py-32 xl:py-48 bg-black text-white">
           <div className="container px-4 md:px-6">
@@ -128,16 +159,16 @@ export default function CryptoLanding() {
                   grow your digital assets with help of AI.
                 </motion.p>
               </motion.div>
-              <motion.div variants={itemVariants} className="space-x-4">
+              <motion.div variants={itemVariants} className="space-y-4 sm:space-y-0 sm:space-x-4">
                 <Button
                   onClick={() => router.push("/auth/signin")}
-                  className="bg-yellow-500 text-black hover:bg-yellow-600"
+                  className="w-full sm:w-auto bg-yellow-500 text-black hover:bg-yellow-600"
                 >
                   Get Started
                 </Button>
                 <Button
                   variant="outline"
-                  className="text-white border-white hover:bg-white hover:text-black"
+                  className="w-full sm:w-auto text-black border-white hover:bg-white hover:text-black"
                 >
                   Learn More
                 </Button>
@@ -160,7 +191,7 @@ export default function CryptoLanding() {
               initial="hidden"
               whileInView="visible"
               viewport={{ once: true, amount: 0.3 }}
-              className="grid gap-6 lg:grid-cols-3 lg:gap-12"
+              className="grid gap-6 md:grid-cols-2 lg:grid-cols-3 lg:gap-12"
             >
               {[
                 {
@@ -233,6 +264,5 @@ export default function CryptoLanding() {
       </main>
       <Footer />
     </div>
-  );
+  )
 }
-

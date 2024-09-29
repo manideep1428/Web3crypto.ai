@@ -2,14 +2,13 @@
 
 import { useState, useEffect } from "react";
 import useWebSocket from "react-use-websocket";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card } from "@/components/ui/card";
 import { Ask } from "@/components/trade/markets/AskTable";
 import { Bid } from "@/components/trade/markets/BidTable";
 import { useParams } from "next/navigation";
 import { Skeleton } from "@/components/ui/skeleton";
 import { TradeViewChartSkeleton } from "@/components/Skeletons/TradingViewSkeleton";
 import { AskSkeleton } from "@/components/Skeletons/AskBidSkeleton";
-import useOnlineStatus from "@/hooks/onlineChecker";
 import TradeViewChart from "@/components/trade/markets/TradeView";
 import { OrderUI } from "@/components/trade/markets/OrderUI";
 import { MarketBar } from "@/components/trade/markets/MarketBar";
@@ -32,13 +31,12 @@ type OrderBookState = {
 
 export default function Markets() {
   const { market } = useParams();
-  const  isOnline  = useOnlineStatus();
   const [orderBook, setOrderBook] = useState<OrderBookState>({
     bids: new Map(),
     asks: new Map(),
   });
   const [isLoading, setIsLoading] = useState(true);
-  const { lastJsonMessage, readyState } = useWebSocket(
+  const { lastJsonMessage } = useWebSocket(
     `wss://stream.binance.com:9443/ws/${market}@depth`
   );
 
@@ -71,14 +69,6 @@ export default function Markets() {
       setIsLoading(false);
     }
   }, [lastJsonMessage]);
-
-  const LoadingSkeleton = () => (
-    <div className="space-y-2">
-      <Skeleton className="h-4 w-[250px]" />
-      <Skeleton className="h-4 w-[200px]" />
-    </div>
-  );
-
   return (
     <div className="container mx-auto p-4">
       <MarketBar market={market as string} />

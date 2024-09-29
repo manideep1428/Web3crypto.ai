@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useCallback } from "react"
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { Table, TableBody, TableCell, TableRow } from "@/components/ui/table"
+import { Table, TableBody, TableCell, TableRow, TableHead, TableHeader } from "@/components/ui/table"
 import { Button } from "@/components/ui/button"
 import { ArrowDown, ArrowUp } from "lucide-react"
 import { getCrypto } from "@/app/utils/ServerProps"
@@ -23,7 +23,7 @@ interface CryptoData {
 
 export default function CryptoList() {
   const [cryptoData, setCryptoData] = useState<CryptoData[]>([])
-  const [loading , setLoading] = useState(true);
+  const [loading, setLoading] = useState(true)
   const [sortColumn, setSortColumn] = useState<keyof CryptoData>("market_cap_rank")
   const [sortDirection, setSortDirection] = useState<"asc" | "desc">("asc")
   const [activeTab, setActiveTab] = useState("all")
@@ -108,6 +108,15 @@ export default function CryptoList() {
   const renderTable = (data: CryptoData[]) => (
     <div className="overflow-x-auto">
       <Table>
+        <TableHeader>
+          <TableRow>
+            <TableHead>Name</TableHead>
+            <TableHead className="text-right">Price</TableHead>
+            <TableHead className="text-right">24h Change</TableHead>
+            <TableHead className="text-right hidden sm:table-cell">Volume</TableHead>
+            <TableHead className="text-right hidden md:table-cell">Market Cap</TableHead>
+          </TableRow>
+        </TableHeader>
         <TableBody>
           {data.slice(0, 12).map((crypto) => (
             <TableRow
@@ -115,10 +124,12 @@ export default function CryptoList() {
               className="hover:cursor-pointer hover:bg-gray-100 hover:dark:bg-gray-900"
               onClick={() => router.push(`/trade/${crypto.symbol}usdt`)}
             >
-              <TableCell className="font-medium flex items-center space-x-2">
-                <Image src={crypto.image} alt={crypto.name} width={24} height={24} />
-                <span className="hidden sm:inline">{crypto.name}</span>
-                <span className="sm:hidden">{crypto.symbol.toUpperCase()}</span>
+              <TableCell className="font-medium">
+                <div className="flex items-center space-x-2">
+                  <Image src={crypto.image} alt={crypto.name} width={24} height={24} />
+                  <span className="hidden sm:inline">{crypto.name}</span>
+                  <span className="sm:hidden">{crypto.symbol.toUpperCase()}</span>
+                </div>
               </TableCell>
               <TableCell className="text-right">${crypto.current_price}</TableCell>
               <TableCell
@@ -137,34 +148,36 @@ export default function CryptoList() {
     </div>
   )
   
-  if(loading) return <CryptoListSkeleton/>
+  if (loading) return <CryptoListSkeleton />
 
   return (
-    <Tabs value={activeTab} onValueChange={handleTabClick} className="w-full">
-      <TabsList className="grid grid-cols-2 sm:grid-cols-5 w-full md:w-3/4 lg:w-1/2 rounded-lg mb-6">
-        <TabsTrigger value="all">All</TabsTrigger>
-        <TabsTrigger value="rank">Rank</TabsTrigger>
-        <TabsTrigger value="24h">24h Change</TabsTrigger>
-        <TabsTrigger value="volume">Volume</TabsTrigger>
-        <TabsTrigger value="marketCap">Market Cap</TabsTrigger>
-      </TabsList>
-      <div className="mt-4">
-        <div className="flex justify-between items-center mb-4">
-          <h2 className="text-xl font-semibold">
-            {activeTab === "all" ? "All Cryptocurrencies" : `Sorted by ${activeTab === "rank" ? "Market Cap Rank" : activeTab}`}
-          </h2>
-          <Button
-            variant="outline"
-            size="sm"
-            onClick={() => sortData(sortColumn)}
-            className="flex items-center text-sm"
-          >
-            {sortDirection === "asc" ? <ArrowUp className="h-4 w-4 mr-1" /> : <ArrowDown className="h-4 w-4 mr-1" />}
-            {sortColumn === "priceChangePercent" ? "24h" : sortColumn === "market_cap_rank" ? "Rank" : sortColumn}
-          </Button>
+    <div className="w-full px-4 sm:px-6 lg:px-8">
+      <Tabs value={activeTab} onValueChange={handleTabClick} className="w-full">
+        <TabsList className="grid grid-cols-2 sm:grid-cols-5 w-full rounded-lg mb-6 overflow-x-auto">
+          <TabsTrigger value="all">All</TabsTrigger>
+          <TabsTrigger value="rank">Rank</TabsTrigger>
+          <TabsTrigger value="24h">24h Change</TabsTrigger>
+          <TabsTrigger value="volume">Volume</TabsTrigger>
+          <TabsTrigger value="marketCap">Market Cap</TabsTrigger>
+        </TabsList>
+        <div className="mt-4">
+          <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-4 space-y-2 sm:space-y-0">
+            <h2 className="text-xl font-semibold">
+              {activeTab === "all" ? "All Cryptocurrencies" : `Sorted by ${activeTab === "rank" ? "Market Cap Rank" : activeTab}`}
+            </h2>
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => sortData(sortColumn)}
+              className="flex items-center text-sm"
+            >
+              {sortDirection === "asc" ? <ArrowUp className="h-4 w-4 mr-1" /> : <ArrowDown className="h-4 w-4 mr-1" />}
+              {sortColumn === "priceChangePercent" ? "24h" : sortColumn === "market_cap_rank" ? "Rank" : sortColumn}
+            </Button>
+          </div>
+          {renderTable(sortedData)}
         </div>
-        {renderTable(sortedData)}
-      </div>
-    </Tabs>
+      </Tabs>
+    </div>
   )
 }
