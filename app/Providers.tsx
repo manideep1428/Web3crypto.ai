@@ -6,6 +6,7 @@ import { type ThemeProviderProps } from "next-themes/dist/types";
 import { Provider } from "react-redux";
 import { store } from "@/store/store";
 import { SessionProvider } from "next-auth/react";
+import Script from "next/script";
 
 export function Providers({ children }: ThemeProviderProps) {
   return (
@@ -16,7 +17,13 @@ export function Providers({ children }: ThemeProviderProps) {
       disableTransitionOnChange
     >
       <Provider store={store}>
-        <SessionProvider>{children}</SessionProvider>
+        <SessionProvider>
+        <Script
+          id="razorpay-checkout-js"
+          src="https://checkout.razorpay.com/v1/checkout.js"
+        />
+          {children}
+        </SessionProvider>
       </Provider>
     </NextThemesProvider>
   );

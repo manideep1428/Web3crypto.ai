@@ -121,7 +121,7 @@ export default function CryptoList() {
           {data.slice(0, 12).map((crypto) => (
             <TableRow
               key={crypto.symbol}
-              className="hover:cursor-pointer hover:bg-gray-100 hover:dark:bg-gray-900"
+              className="hover:cursor-pointer"
               onClick={() => router.push(`/trade/${crypto.symbol}usdt`)}
             >
               <TableCell className="font-medium">
