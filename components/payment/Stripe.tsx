@@ -1,77 +1,62 @@
-import { useState } from 'react'
-import { useStripe, useElements, PaymentElement } from '@stripe/react-stripe-js'
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
-import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
+import { useState, useEffect } from 'react';
+import { Sheet, SheetClose, SheetContent, SheetHeader, SheetTitle } from "@/components/ui/sheet";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 
-interface PaymentComponentProps {
-  onClose: () => void
+declare global {
+  interface Window {
+    Razorpay: any;
+  }
 }
 
-export default function PaymentComponent({ onClose }: PaymentComponentProps) {
-  const stripe = useStripe()
-  const elements = useElements()
-  const [amount, setAmount] = useState('')
-  const [isProcessing, setIsProcessing] = useState(false)
-  const [paymentError, setPaymentError] = useState<string | null>(null)
+interface DepositProps {
+  isOpen: boolean;
+  handlePayment: () => void;
+  sendAmount: (amount: string) => void;
+  amount: string;
+  onClose: () => void;
+}
 
-  const handleSubmit = async (event: React.FormEvent) => {
-    event.preventDefault()
+export default function AddMoney({ isOpen, handlePayment, sendAmount, amount, onClose }: DepositProps) {
+  const [localAmount, setLocalAmount] = useState(amount);
 
-    if (!stripe || !elements) {
-      return
-    }
+  useEffect(() => {
+    setLocalAmount(amount); 
+  }, [amount]);
 
-    setIsProcessing(true)
-    setPaymentError(null)
-
-    const { error } = await stripe.confirmPayment({
-      elements,
-      confirmParams: {
-        return_url: `${window.location.origin}/payment-success`,
-      },
-    })
-
-    if (error) {
-      setPaymentError(error.message ?? 'An unknown error occurred')
-    }
-
-    setIsProcessing(false)
-  }
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    setLocalAmount(value);
+    sendAmount(value);
+  };
 
   return (
-    <Card className="w-full max-w-md mx-auto">
-      <CardHeader>
-        <CardTitle>Make a Payment</CardTitle>
-      </CardHeader>
-      <form onSubmit={handleSubmit}>
-        <CardContent className="space-y-4">
-          <div className="space-y-2">
-            <Label htmlFor="amount">Amount (USD)</Label>
+    <Sheet open={isOpen} onOpenChange={onClose}> 
+      <SheetContent>
+        <SheetHeader>
+          <SheetTitle>Add Money to Wallet</SheetTitle>
+        </SheetHeader>
+        <div className="grid gap-4 py-4">
+          <div className="grid grid-cols-4 items-center gap-4">
             <Input
               id="amount"
               type="number"
+              value={localAmount}
+              onChange={handleChange} 
               placeholder="Enter amount"
-              value={amount}
-              onChange={(e) => setAmount(e.target.value)}
-              required
+              className="col-span-3"
             />
+            <Button onClick={handlePayment} disabled={!localAmount || parseFloat(localAmount) <= 0}>
+              Pay
+            </Button>
           </div>
-          <PaymentElement />
-        </CardContent>
-        <CardFooter className="flex justify-between">
-          <Button type="button" variant="outline" onClick={onClose}>
-            Cancel
+        </div>
+        <SheetClose asChild>
+          <Button variant="ghost" className="w-full justify-center" onClick={onClose}>
+            Close
           </Button>
-          <Button type="submit" disabled={isProcessing || !stripe || !elements}>
-            {isProcessing ? 'Processing...' : 'Pay Now'}
-          </Button>
-        </CardFooter>
-      </form>
-      {paymentError && (
-        <div className="text-red-500 text-sm mt-2 text-center">{paymentError}</div>
-      )}
-    </Card>
-  )
+        </SheetClose>
+      </SheetContent>
+    </Sheet>
+  );
 }

@@ -1,12 +1,10 @@
 'use client'
-import PaymentComponent from '@/components/payment/Stripe'
-import React from 'react'
 
 
-export default  function OrderPage() {
+export default function Home() {
   return (
-    <div>
-    <PaymentComponent onClose={() => console.log('closed')}/>
-    </div>
+    <main className="flex min-h-screen flex-col items-center justify-between p-24">
+      <h1>Welcome to Your App</h1>
+    </main>
   )
 }

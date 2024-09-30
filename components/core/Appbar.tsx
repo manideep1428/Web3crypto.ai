@@ -8,6 +8,7 @@ import { Button } from "../ui/button"
 import UserDetails from "../account/UserDetails"
 import Walletbutton from "../WalletButton"
 import DarkModeToggle from "../DarkModeToggle"
+import DepositButton from "../DepositButton"
 
 
 export const Appbar = ({ toggleSidebar }: { toggleSidebar: () => void }) => {
@@ -37,13 +38,13 @@ export const Appbar = ({ toggleSidebar }: { toggleSidebar: () => void }) => {
   return (
     <div className="text-black bg-white dark:text-white dark:bg-black border-b border-slate-800">
       <div className="flex justify-between items-center p-2">
-        <button
-          className="fixed top-20 left-4 z-40 p-2 bg-background border rounded-md"
-          onClick={toggleSidebar}
-        >
-          <MenuIcon className="h-6 w-6" />
-        </button>
         <div className="flex items-center">
+          <button
+            className="left-4 p-2 bg-background border rounded-md"
+            onClick={toggleSidebar}
+          >
+            <MenuIcon className="h-6 w-6" />
+          </button>
           <Link href="/markets" className="text-xl pl-4 cursor-pointer font-semibold dark:text-white">
             <i>WebCrypto.ai</i>
           </Link>
@@ -53,14 +54,7 @@ export const Appbar = ({ toggleSidebar }: { toggleSidebar: () => void }) => {
           </div>
         </div>
         <div className="hidden md:flex flex-row justify-center gap-5 items-center">
-          <Button
-            variant="outline"
-            className="text-orange-500 hover:bg-orange-500 hover:text-white"
-            onClick={handleDeposit}
-          >
-            <HandCoins className="mr-2 h-4 w-4" />
-            Deposit
-          </Button>
+          <DepositButton />
           <Input
             type="search"
             placeholder="Search markets"
@@ -73,7 +67,6 @@ export const Appbar = ({ toggleSidebar }: { toggleSidebar: () => void }) => {
               <Button onClick={() => signIn("google")}>Login</Button>
             )}
           </div>
-          <DarkModeToggle />
         </div>
         <div className="md:hidden">
           <Button variant="ghost" size="icon" onClick={() => setMenuOpen(!menuOpen)}>
@@ -85,16 +78,8 @@ export const Appbar = ({ toggleSidebar }: { toggleSidebar: () => void }) => {
         <div className="md:hidden flex flex-col p-4 gap-3">
           <NavItem href="/markets">Markets</NavItem>
           <NavItem href="/trade/btcusdt">Trade</NavItem>
-          <Button
-            variant="outline"
-            className="text-orange-500 hover:bg-orange-500 hover:text-white"
-            onClick={handleDeposit}
-          >
-            <HandCoins className="mr-2 h-4 w-4" />
-            Deposit
-          </Button>
+          <DepositButton/>
           {session?.user && <Walletbutton />}
-          <DarkModeToggle />
         </div>
       )}
     </div>

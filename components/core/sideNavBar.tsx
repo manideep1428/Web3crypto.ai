@@ -2,13 +2,13 @@
 
 import Link from 'next/link'
 import { useTheme } from 'next-themes'
-import { 
-  ShoppingCartIcon, 
-  BellIcon, 
-  LogOutIcon, 
-  UserIcon, 
-  UsersIcon, 
-  FacebookIcon, 
+import {
+  ShoppingCartIcon,
+  BellIcon,
+  LogOutIcon,
+  UserIcon,
+  UsersIcon,
+  FacebookIcon,
   TwitterIcon,
   MoonIcon,
   SunIcon,
@@ -34,7 +34,7 @@ export default function SideNavbar({ isOpen }: SideNavbarProps) {
   ]
 
   return (
-    <div className={`fixed top-16 left-0 h-full bg-background border-r transition-all duration-300 ${isOpen ? 'w-[240px]' : 'w-0'} overflow-hidden z-40`}>
+    <div className={`fixed top-16 left-0 h-full bg-background  transition-all duration-300 ${isOpen ? 'w-[240px]' : 'w-0'} overflow-hidden z-40`}>
       <nav className="h-full py-20 px-4 flex flex-col justify-center gap-2">
         {menuItems.map((item, index) => (
           <Link
@@ -42,8 +42,10 @@ export default function SideNavbar({ isOpen }: SideNavbarProps) {
             href={item.href}
             className={`${pathName === item.href ? 'bg-muted-foreground/30  rounded-sm' : ''}  flex p-6 space-x-2 text-muted-foreground hover:text-primary py-2 `}
           >
-            <item.icon className="h-4 w-4" />
-            <span>{item.label}</span>
+            <span className='flex justify-center items-center space-x-2'>
+              <item.icon className="h-4 w-4" />
+              <span>{item.label}</span>
+            </span>
           </Link>
         ))}
         <div className="mt-auto space-y-4">
@@ -58,14 +60,14 @@ export default function SideNavbar({ isOpen }: SideNavbarProps) {
               </button>
             </div>
           </div>
-          <button 
+          <button
             className="flex items-center space-x-2 text-muted-foreground hover:text-primary"
             onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
           >
             {theme === 'dark' ? <SunIcon className="h-4 w-4" /> : <MoonIcon className="h-4 w-4" />}
             <span>{theme === 'dark' ? 'Light Mode' : 'Dark Mode'}</span>
           </button>
-          <button 
+          <button
             className="flex items-center space-x-2 text-muted-foreground hover:text-primary"
             onClick={() => console.log('Logout')}
           >
