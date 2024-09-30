@@ -19,6 +19,7 @@ model User {
   Authenticator Authenticator[]
   crypto        Crypto[]
   orders        Order[]
+  despoits      Deposit[]
   createdAt     DateTime        @default(now())
   updatedAt     DateTime        @updatedAt
 }
@@ -111,4 +112,18 @@ model Crypto {
   orders         Order[]
   userId         String
   user           User    @relation(fields: [userId], references: [id])
+}
+
+model  Deposit{
+  id             Int     @id @default(autoincrement())
+  userId         String
+  user           User    @relation(fields: [userId], references: [id])
+  amount         Int
+  amount_due     Int
+  amount_paid    Int
+  receipt        Int
+  currency       String 
+  status         String
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
 }

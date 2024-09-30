@@ -14,24 +14,24 @@ interface DepositProps {
   handlePayment: () => void;
   sendAmount: (amount: string) => void;
   amount: string;
-  onClose: () => void; // New prop for closing the sheet
+  onClose: () => void;
 }
 
 export default function AddMoney({ isOpen, handlePayment, sendAmount, amount, onClose }: DepositProps) {
   const [localAmount, setLocalAmount] = useState(amount);
 
   useEffect(() => {
-    setLocalAmount(amount); // Sync local state with parent state
+    setLocalAmount(amount); 
   }, [amount]);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
-    setLocalAmount(value); // Update local input state
-    sendAmount(value); // Send the updated value to parent
+    setLocalAmount(value);
+    sendAmount(value);
   };
 
   return (
-    <Sheet open={isOpen} onOpenChange={onClose}> {/* Automatically close the sheet when onClose is called */}
+    <Sheet open={isOpen} onOpenChange={onClose}> 
       <SheetContent>
         <SheetHeader>
           <SheetTitle>Add Money to Wallet</SheetTitle>
@@ -42,7 +42,7 @@ export default function AddMoney({ isOpen, handlePayment, sendAmount, amount, on
               id="amount"
               type="number"
               value={localAmount}
-              onChange={handleChange} // Call handleChange on input change
+              onChange={handleChange} 
               placeholder="Enter amount"
               className="col-span-3"
             />

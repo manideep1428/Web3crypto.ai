@@ -67,7 +67,6 @@ export const Appbar = ({ toggleSidebar }: { toggleSidebar: () => void }) => {
               <Button onClick={() => signIn("google")}>Login</Button>
             )}
           </div>
-          <DarkModeToggle />
         </div>
         <div className="md:hidden">
           <Button variant="ghost" size="icon" onClick={() => setMenuOpen(!menuOpen)}>
@@ -79,16 +78,8 @@ export const Appbar = ({ toggleSidebar }: { toggleSidebar: () => void }) => {
         <div className="md:hidden flex flex-col p-4 gap-3">
           <NavItem href="/markets">Markets</NavItem>
           <NavItem href="/trade/btcusdt">Trade</NavItem>
-          <Button
-            variant="outline"
-            className="text-orange-500 hover:bg-orange-500 hover:text-white"
-            onClick={handleDeposit}
-          >
-            <HandCoins className="mr-2 h-4 w-4" />
-            Deposit
-          </Button>
+          <DepositButton/>
           {session?.user && <Walletbutton />}
-          <DarkModeToggle />
         </div>
       )}
     </div>

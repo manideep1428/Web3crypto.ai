@@ -4,6 +4,7 @@ import AddMoney from "./payment/Stripe";
 import { useState } from "react";
 import { useToast } from "./ui/use-toast";
 import { useRouter } from "next/navigation";
+import axios from "axios";
 
 export default function DepositButton() {
   const [isOpen, setIsOpen] = useState(false);
@@ -16,31 +17,33 @@ export default function DepositButton() {
   };
 
   const handlePayment = async () => {
+    const amount1 = Number(amount)*100
     try {
       const response = await fetch('/api/create-order', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ amount: parseFloat(amount) * 100 }),
-      });
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ amount, currency: 'INR', receipt: 'receipt#1', notes: {} })
+          });
+    
 
       const data = await response.json();
 
       if (data.id) {
         const options = {
-          key: process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID,
+          key: process.env.RAZORPAY_KEY_ID,
           amount: data.amount,
           currency: data.currency,
-          name: 'Your Company Name',
+          name: 'Web3Crypto.ai',
           description: 'Add Money to Wallet',
           order_id: data.id,
           handler: function (response: any) {
             handleSuccess(response);
           },
           prefill: {
-            name: 'User Name',
-            email: 'user@example.com',
+            name: "Manideep",
+            email: 'saimanideep.ch12345@gmail.com',
             contact: '9999999999',
           },
           theme: {
