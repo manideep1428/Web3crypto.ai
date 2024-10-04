@@ -115,15 +115,15 @@ model Crypto {
 }
 
 model  Deposit{
-  id             Int     @id @default(autoincrement())
+  id             String     @id
   userId         String
   user           User    @relation(fields: [userId], references: [id])
   amount         Int
   amount_due     Int
   amount_paid    Int
-  receipt        Int
+  receipt        String? 
   currency       String 
-  status         String
+  status         OrderStatus
   createdAt      DateTime @default(now())
   updatedAt      DateTime @updatedAt
 }

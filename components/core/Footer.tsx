@@ -4,23 +4,64 @@ import Link from "next/link"
 
 export default function Footer() {
   return (
-  <motion.footer
-    initial={{ opacity: 0 }}
-    animate={{ opacity: 1 }}
-    transition={{ delay: 1, duration: 0.5 }}
-    className="flex flex-col gap-2 sm:flex-row py-6 w-full shrink-0 items-center px-4 md:px-6 border-t border-gray-200 dark:border-gray-800"
-  >
-    <p className="text-xs text-gray-500 dark:text-gray-400">
-      © 2024 WebCrypto.ai. All rights reserved.
-    </p>
-    <nav className="sm:ml-auto flex gap-4 sm:gap-6">
-      <Link className="text-xs hover:underline underline-offset-4" href="#">
-        Terms of Service
-      </Link>
-      <Link className="text-xs hover:underline underline-offset-4" href="#">
-        Privacy
-      </Link>
-    </nav>
-  </motion.footer>
+    <footer className="bg-gray-900 py-12">
+    <div className="container mx-auto px-4 sm:px-6">
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
+        <div>
+          <h3 className="text-lg font-semibold mb-4">Products</h3>
+          <ul className="space-y-2">
+            {["Exchange", "Wallet", "Card", "Earn"].map((item) => (
+              <li key={item}>
+                <Link href="#" className="text-gray-400 hover:text-yellow-500 transition-colors">
+                  {item}
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </div>
+        <div>
+          <h3 className="text-lg font-semibold mb-4">Company</h3>
+          <ul className="space-y-2">
+            {["About", "Careers", "Press", "Blog"].map((item) => (
+              <li key={item}>
+                <Link href="#" className="text-gray-400 hover:text-yellow-500 transition-colors">
+                  {item}
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </div>
+        <div>
+          <h3 className="text-lg font-semibold mb-4">Support</h3>
+          <ul className="space-y-2">
+            {["Help Center", "Contact Us", "API Documentation", "Fees"].map((item) => (
+              <li key={item}>
+                <Link href="#" className="text-gray-400 hover:text-yellow-500 transition-colors">
+                  {item}
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </div>
+        <div>
+          <h3 className="text-lg font-semibold mb-4">Legal</h3>
+          <ul className="space-y-2">
+            {["Privacy Policy", "Terms of Service", "Cookie Policy", "Risk Disclosure"].map((item) => (
+              <li key={item}>
+                <Link href="#" className="text-gray-400 hover:text-yellow-500 transition-colors">
+                  {item}
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </div>
+      <div className="mt-12 pt-8 border-t border-gray-800 text-center">
+        <p className="text-gray-400">
+          © 2024 Web3Crypto.ai   All rights reserved.
+        </p>
+      </div>
+    </div>
+  </footer>
   )
 }

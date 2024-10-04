@@ -4,28 +4,47 @@ import { Button } from "@/components/ui/button"
 import {
   ArrowRight,
   Bitcoin,
-  LineChart,
-  LockKeyholeOpen,
-  BrainCircuit,
+  Wallet,
+  BarChart2,
+  Lock,
+  Zap,
+  Globe,
   Menu,
+  X,
+  ChevronRight,
 } from "lucide-react"
 import Link from "next/link"
+import Image from "next/image"
 import { useRouter } from "next/navigation"
-import { motion, useAnimationControls } from "framer-motion"
-import { useEffect, useState } from "react"
+import { motion, AnimatePresence } from "framer-motion"
+import { useState, useEffect } from "react"
 import { useSession } from "next-auth/react"
 import Footer from "@/components/core/Footer"
 
 export default function Component() {
-  const controls = useAnimationControls()
   const router = useRouter()
   const session = useSession()
   const [isMenuOpen, setIsMenuOpen] = useState(false)
+  const [cryptoPrices, setCryptoPrices] = useState({
+    BTC: 65000,
+    ETH: 12000,
+  })
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCryptoPrices({
+        BTC: Math.random() * 10000 + 30000,
+        ETH: Math.random() * 1000 + 2000,
+      })
+    }, 3000)
+
+    return () => clearInterval(interval)
+  }, [])
 
   if (session.data?.user) {
-    router.push("/markets")
+    router.push("/")
   }
-  
+
   const containerVariants = {
     hidden: { opacity: 0 },
     visible: {
@@ -49,220 +68,254 @@ export default function Component() {
     },
   }
 
-  useEffect(() => {
-    controls.start({
-      backgroundPosition: ["0% 50%", "100% 50%", "0% 50%"],
-      transition: {
-        duration: 5,
-        repeat: Infinity,
-        ease: "linear",
-      },
-    })
-  }, [controls])
-
   return (
-    <div className="flex flex-col min-h-screen bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100">
-      <motion.header
-        initial={{ y: -50, opacity: 0 }}
-        animate={{ y: 0, opacity: 1 }}
-        transition={{ duration: 0.5 }}
-        className="bg-home-image px-4 lg:px-6 h-14 flex items-center justify-between border-b border-gray-200 dark:border-gray-800"
-      >
-        <div className="flex items-center">
-          <Bitcoin className="h-6 w-6 text-yellow-500" />
-          <motion.span
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 0.5, duration: 0.5 }}
-            className="ml-2 font-bold"
-          >
-            WebCrypto.ai
-          </motion.span>
-        </div>
-        <nav className="hidden md:flex gap-4 sm:gap-6">
-          {["Features", "Pricing", "About", "Contact"].map((item, index) => (
-            <motion.div
-              key={item}
-              initial={{ opacity: 0, y: -20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.5 + index * 0.1 }}
-            >
+    <div className="flex flex-col min-h-screen bg-gray-900 text-white">
+      <header className="bg-gray-800 py-4 px-6 sm:px-10 fixed w-full z-50">
+        <div className="container mx-auto flex justify-between items-center">
+          <Link href="/" className="flex items-center space-x-2">
+            <Bitcoin className="h-8 w-8 text-yellow-500" />
+            <span className="text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-yellow-400 to-yellow-600">
+              Web3Crypto.ai
+            </span>
+          </Link>
+          <nav className="hidden md:flex space-x-8">
+            {["Markets", "Trade", "Wallet", "Learn"].map((item) => (
               <Link
-                className="text-sm font-medium hover:underline underline-offset-4"
+                key={item}
                 href="#"
+                className="text-gray-300 hover:text-yellow-500 transition-colors"
               >
                 {item}
               </Link>
-            </motion.div>
-          ))}
-        </nav>
-        <Button
-          variant="ghost"
-          size="icon"
-          className="md:hidden"
-          onClick={() => setIsMenuOpen(!isMenuOpen)}
-        >
-          <Menu className="h-6 w-6" />
-        </Button>
-      </motion.header>
-      {isMenuOpen && (
-        <motion.nav
-          initial={{ opacity: 0, y: -20 }}
-          animate={{ opacity: 1, y: 0 }}
-          exit={{ opacity: 0, y: -20 }}
-          className="md:hidden bg-white dark:bg-gray-900 py-2"
-        >
-          {["Features", "Pricing", "About", "Contact"].map((item, index) => (
-            <Link
-              key={item}
-              className="block px-4 py-2 text-sm font-medium hover:bg-gray-100 dark:hover:bg-gray-800"
-              href="#"
+            ))}
+          </nav>
+          <div className="hidden md:block">
+            <Button
+              onClick={() => router.push("/auth/signin")}
+              className="bg-yellow-500 text-gray-900 hover:bg-yellow-600"
             >
-              {item}
-            </Link>
-          ))}
-        </motion.nav>
-      )}
-      <main className="flex-1">
-        <section className="w-full py-12 md:py-24 lg:py-32 xl:py-48 bg-black text-white">
-          <div className="container px-4 md:px-6">
+              Get Started
+            </Button>
+          </div>
+          <Button
+            variant="ghost"
+            size="icon"
+            className="md:hidden text-gray-300"
+            onClick={() => setIsMenuOpen(!isMenuOpen)}
+          >
+            {isMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
+          </Button>
+        </div>
+      </header>
+      <AnimatePresence>
+        {isMenuOpen && (
+          <motion.nav
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -20 }}
+            className="md:hidden bg-gray-800 py-4 px-6 mt-16 fixed w-full z-40"
+          >
+            {["Markets", "Trade", "Wallet", "Learn"].map((item) => (
+              <Link
+                key={item}
+                href="#"
+                className="block py-2 text-gray-300 hover:text-yellow-500 transition-colors"
+              >
+                {item}
+              </Link>
+            ))}
+            <Button
+              onClick={() => router.push("/auth/signin")}
+              className="w-full mt-4 bg-yellow-500 text-gray-900 hover:bg-yellow-600"
+            >
+              Get Started
+            </Button>
+          </motion.nav>
+        )}
+      </AnimatePresence>
+      <main className="flex-grow pt-20">
+        <section className="py-20 sm:py-32 relative overflow-hidden">
+          <div className="absolute inset-0 bg-[url('/placeholder.svg?height=1080&width=1920')] bg-cover bg-center opacity-10" />
+          <div className="container mx-auto px-4 sm:px-6 relative z-10">
             <motion.div
               variants={containerVariants}
               initial="hidden"
               animate="visible"
-              className="flex flex-col items-center space-y-4 text-center"
+              className="text-center space-y-8"
             >
-              <motion.div variants={itemVariants} className="space-y-2 bg-home-image">
-                <h1 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl lg:text-6xl/none">
-                  <motion.span
-                    animate={controls}
-                    className="inline-block bg-gradient-to-r from-yellow-400 via-yellow-500 to-yellow-600 bg-clip-text text-transparent bg-300% relative"
-                  >
-                    {" WebCrypto.ai".split("").map((char, index) => (
-                      <motion.span
-                        key={index}
-                        initial={{ opacity: 0 }}
-                        animate={{ opacity: 1 }}
-                        transition={{ delay: index * 0.1, duration: 0.5 }}
-                        className="inline-block"
-                      >
-                        {char}
-                      </motion.span>
-                    ))}
-                  </motion.span>
-                </h1>
-                <motion.p
-                  variants={itemVariants}
-                  className="mx-auto max-w-[700px] text-gray-400 md:text-xl"
-                >
-                  Your gateway to learn cryptocurrencies. Trade, invest, and
-                  grow your digital assets with help of AI.
-                </motion.p>
-              </motion.div>
-              <motion.div variants={itemVariants} className="space-y-4 sm:space-y-0 sm:space-x-4">
+              <motion.h1
+                variants={itemVariants}
+                className="text-4xl sm:text-6xl font-bold leading-tight"
+              >
+                Learn Crypto with
+                <span className="bg-clip-text text-transparent bg-gradient-to-r from-yellow-400 to-yellow-600">
+                  {" "}
+                  Confidence
+                </span>
+              </motion.h1>
+              <motion.p variants={itemVariants} className="text-xl sm:text-2xl text-gray-400 max-w-3xl mx-auto">
+                Join the of Journey about Crypto on the {"world's "}most powerful crypto learning platform.
+              </motion.p>
+              <motion.div variants={itemVariants} className="flex flex-col sm:flex-row justify-center items-center space-y-4 sm:space-y-0 sm:space-x-4">
                 <Button
                   onClick={() => router.push("/auth/signin")}
-                  className="w-full sm:w-auto bg-yellow-500 text-black hover:bg-yellow-600"
+                  className="w-full sm:w-auto bg-yellow-500 text-gray-900 hover:bg-yellow-600 text-lg py-6 px-8"
                 >
-                  Get Started
+                  Start Trading Now
+                  <ArrowRight className="ml-2 h-5 w-5" />
                 </Button>
-                <Button
-                  variant="outline"
-                  className="w-full sm:w-auto text-black border-white hover:bg-white hover:text-black"
-                >
-                  Learn More
+                <Button variant="outline" className="w-full sm:w-auto text-yellow-500 border-yellow-500 hover:bg-yellow-500 hover:text-gray-900 text-lg py-6 px-8">
+                  Explore Markets
                 </Button>
               </motion.div>
             </motion.div>
           </div>
         </section>
-        <section className="w-full py-12 md:py-24 lg:py-32 bg-gray-100 dark:bg-gray-800">
-          <div className="container px-4 md:px-6">
-            <motion.h2
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5 }}
-              className="text-3xl font-bold tracking-tighter sm:text-5xl text-center mb-12"
-            >
-              Our Features
-            </motion.h2>
-            <motion.div
-              variants={containerVariants}
-              initial="hidden"
-              whileInView="visible"
-              viewport={{ once: true, amount: 0.3 }}
-              className="grid gap-6 md:grid-cols-2 lg:grid-cols-3 lg:gap-12"
-            >
+        <section className="py-16 bg-gray-800">
+          <div className="container mx-auto px-4 sm:px-6">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
               {[
-                {
-                  icon: LineChart,
-                  title: "Real-time Trading ",
-                  description:
-                    "Trade with Dummy cash to learn about crypto and trading.",
-                },
-                {
-                  icon: LockKeyholeOpen,
-                  title: "Open Source",
-                  description:
-                    "It's is an OpenSource Project . So ,You have full control over your data and assets",
-                },
-                {
-                  icon: BrainCircuit,
-                  title: "AI-powered",
-                  description:
-                    "It AI powered you can track the trading stratergies and train the model with that data",
-                },
+                { icon: Wallet, title: "Secure Wallet", description: "Store your crypto assets safely" },
+                { icon: BarChart2, title: "Advanced Trading", description: "Access powerful trading tools" },
+                { icon: Lock, title: "Bank-grade Security", description: "Your funds are always protected" },
+                { icon: Zap, title: "Instant Transactions", description: "Lightning-fast crypto transfers" },
               ].map((feature, index) => (
                 <motion.div
                   key={index}
                   variants={itemVariants}
-                  className="flex flex-col items-center space-y-4 text-center"
+                  initial="hidden"
+                  whileInView="visible"
+                  viewport={{ once: true }}
+                  className="bg-gray-700 p-6 rounded-lg shadow-lg hover:shadow-yellow-500/20 transition-shadow duration-300"
                 >
-                  <feature.icon className="h-12 w-12 text-yellow-500" />
-                  <h3 className="text-xl font-bold">{feature.title}</h3>
-                  <p className="text-gray-500 dark:text-gray-400">
-                    {feature.description}
-                  </p>
+                  <feature.icon className="h-12 w-12 text-yellow-500 mb-4" />
+                  <h3 className="text-xl font-semibold mb-2">{feature.title}</h3>
+                  <p className="text-gray-400">{feature.description}</p>
                 </motion.div>
               ))}
-            </motion.div>
+            </div>
           </div>
         </section>
-        <section className="w-full py-12 md:py-24 lg:py-32">
-          <div className="container px-4 md:px-6">
-            <motion.div
-              variants={containerVariants}
-              initial="hidden"
-              whileInView="visible"
-              viewport={{ once: true, amount: 0.3 }}
-              className="grid gap-6 lg:grid-cols-2 lg:gap-12 items-center"
+        <section className="py-20 bg-gray-900">
+          <div className="container mx-auto px-4 sm:px-6">
+            <motion.h2
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5 }}
+              className="text-3xl sm:text-4xl font-bold text-center mb-12"
             >
-              <motion.div variants={itemVariants} className="space-y-4">
-                <h2 className="text-3xl font-bold tracking-tighter sm:text-5xl">
-                  Start Your Crypto Journey
-                </h2>
-                <p className="text-gray-500 dark:text-gray-400 md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
-                  Join thousands of traders and investors who trust CryptoHub
-                  for their cryptocurrency needs. Get started in minutes.
-                </p>
+              Popular Cryptocurrencies
+            </motion.h2>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+              {[
+                { icon: Bitcoin, name: "Bitcoin", symbol: "BTC", color: "yellow" },
+                { icon: Bitcoin , name: "Ethereum", symbol: "ETH", color: "blue" },
+                { icon: Globe, name: "Ripple", symbol: "XRP", color: "indigo" },
+              ].map((crypto, index) => (
+                <motion.div
+                  key={index}
+                  variants={itemVariants}
+                  initial="hidden"
+                  whileInView="visible"
+                  viewport={{ once: true }}
+                  className="bg-gray-800 p-6 rounded-lg shadow-lg hover:shadow-yellow-500/20 transition-shadow duration-300 flex items-center justify-between"
+                >
+                  <div className="flex items-center space-x-4">
+                    <crypto.icon className={`h-12 w-12 text-${crypto.color}-500`} />
+                    <div>
+                      <h3 className="text-xl font-semibold">{crypto.name}</h3>
+                      <p className="text-gray-400">{crypto.symbol}</p>
+                    </div>
+                  </div>
+                  <div className="text-right">
+                    <p className="text-2xl font-bold">
+                      $ 0.00 
+                    </p>
+                    <p className={`text-sm ${index % 2 === 0 ? "text-green-500" : "text-red-500"}`}>
+                      {index % 2 === 0 ? "+" : "-"}
+                      {(Math.random() * 5).toFixed(2)}%
+                    </p>
+                  </div>
+                </motion.div>
+              ))}
+            </div>
+            <div className="text-center mt-12">
+              <Button variant="outline" className="text-yellow-500 border-yellow-500 hover:bg-yellow-500 hover:text-gray-900">
+                View All Markets
+                <ChevronRight className="ml-2 h-4 w-4" />
+              </Button>
+            </div>
+          </div>
+        </section>
+        <section className="py-20 bg-gray-800">
+          <div className="container mx-auto px-4 sm:px-6">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+              <motion.div
+                variants={containerVariants}
+                initial="hidden"
+                whileInView="visible"
+                viewport={{ once: true }}
+                className="space-y-6"
+              >
+                <motion.h2 variants={itemVariants} className="text-3xl sm:text-4xl font-bold">
+                  Start Your Crypto Journey Today
+                </motion.h2>
+                <motion.p variants={itemVariants} className="text-xl text-gray-400">
+                  Join millions of users worldwide and experience the power of decentralized finance.
+                </motion.p>
+                <motion.ul variants={containerVariants} className="space-y-4">
+                  {[
+                    "Create your account in minutes",
+                    "Secure storage for your digital assets",
+                    "24/7 access to global markets",
+                    "Advanced trading tools and analytics",
+                  ].map((item, index) => (
+                    <motion.li key={index} variants={itemVariants} className="flex items-center space-x-3">
+                      <svg
+                        className="h-5 w-5 text-yellow-500"
+                        fill="none"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth="2"
+                        viewBox="0 0 24 24"
+                        stroke="currentColor"
+                      >
+                        <path d="M5 13l4 4L19 7"></path>
+                      </svg>
+                      <span>{item}</span>
+                    </motion.li>
+                  ))}
+                </motion.ul>
+                <motion.div variants={itemVariants}>
+                  <Button
+                    onClick={() => router.push("/auth/signin")}
+                    className="bg-yellow-500 text-gray-900 hover:bg-yellow-600 text-lg py-6 px-8"
+                  >
+                    Create Your Free Account
+                    <ArrowRight className="ml-2 h-5 w-5" />
+                  </Button>
+                </motion.div>
               </motion.div>
               <motion.div
                 variants={itemVariants}
-                className="flex flex-col space-y-4"
+                initial="hidden"
+                whileInView="visible"
+                viewport={{ once: true }}
+                className="relative"
               >
-                <Button
-                  onClick={() => router.push("/auth/signin")}
-                  className="bg-yellow-500 text-black hover:bg-yellow-600 max-w-lg"
-                >
-                  Create Account
-                  <ArrowRight className="ml-2 h-4 w-4" />
-                </Button>
+                <div className="absolute inset-0 bg-gradient-to-r from-yellow-400 to-yellow-600 rounded-lg transform -rotate-6"></div>
+                <Image
+                  fill={true}
+                  src="/placeholder.svg?height=600&width=800"
+                  alt="Crypto trading platform"
+                  className="relative z-10 rounded-lg shadow-xl"
+                />
               </motion.div>
-            </motion.div>
+            </div>
           </div>
         </section>
       </main>
-      <Footer />
+      <Footer/>
     </div>
   )
 }
