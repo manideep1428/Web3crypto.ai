@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { Sheet, SheetClose, SheetContent, SheetHeader, SheetTitle } from "@/components/ui/sheet"
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogClose } from "@/components/ui/dialog"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Card, CardContent } from "@/components/ui/card"
@@ -40,11 +40,11 @@ export default function AddMoney({ isOpen, handlePayment, sendAmount, amount, on
   }
 
   return (
-    <Sheet open={isOpen} onOpenChange={onClose}>
-      <SheetContent className="sm:max-w-md">
-        <SheetHeader>
-          <SheetTitle className="text-2xl font-bold">Add Money to Wallet</SheetTitle>
-        </SheetHeader>
+    <Dialog open={isOpen} onOpenChange={onClose}>
+      <DialogContent className="sm:max-w-md">
+        <DialogHeader>
+          <DialogTitle className="text-2xl font-bold">Add Money to Wallet</DialogTitle>
+        </DialogHeader>
         <div className="mt-6 space-y-6">
           <Card>
             <CardContent className="p-6">
@@ -86,12 +86,12 @@ export default function AddMoney({ isOpen, handlePayment, sendAmount, amount, on
             By proceeding, you agree to our Terms of Service and Privacy Policy.
           </div>
         </div>
-        <SheetClose asChild>
+        <DialogClose asChild>
           <Button variant="outline" className="mt-6 w-full" onClick={onClose}>
             Cancel
           </Button>
-        </SheetClose>
-      </SheetContent>
-    </Sheet>
+        </DialogClose>
+      </DialogContent>
+    </Dialog>
   )
 }

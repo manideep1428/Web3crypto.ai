@@ -1,13 +1,12 @@
 import { useState } from "react"
 import { usePathname, useRouter } from "next/navigation"
 import Link from "next/link"
-import { HandCoins, Menu, MenuIcon } from "lucide-react"
+import { HandCoins, Menu, MenuIcon, User } from "lucide-react"
 import { signIn, useSession } from "next-auth/react"
 import { Input } from "../ui/input"
 import { Button } from "../ui/button"
 import UserDetails from "../account/UserDetails"
 import Walletbutton from "../WalletButton"
-import DarkModeToggle from "../DarkModeToggle"
 import DepositButton from "../DepositButton"
 
 
@@ -50,38 +49,28 @@ export const Appbar = ({ toggleSidebar }: { toggleSidebar: () => void }) => {
           </Link>
           <div className="hidden md:flex m-auto gap-6 p-4">
             <NavItem href="/markets">Markets</NavItem>
-            <NavItem href="/trade/SOL_USDC">Trade</NavItem>
+            <NavItem href="/trade/btcusdt">Trade</NavItem>
           </div>
         </div>
-        <div className="hidden md:flex flex-row justify-center gap-5 items-center">
+        <div className="flex md:flex flex-row justify-center gap-5 items-center">
+          <div>
           <DepositButton />
+          </div>
+          <Walletbutton/>
           <Input
             type="search"
             placeholder="Search markets"
-            className="max-w-sm"
+            className="hidden md:max-w-sm"
           />
           <div className="mr-2">
             {session?.user ? (
               <UserDetails />
             ) : (
-              <Button onClick={() => signIn("google")}>Login</Button>
+              <Button className="rounded-full bg-white text-black dark:text-white dark:bg-black" onClick={() => signIn("google")}><User/></Button>
             )}
           </div>
         </div>
-        <div className="md:hidden">
-          <Button variant="ghost" size="icon" onClick={() => setMenuOpen(!menuOpen)}>
-            <Menu />
-          </Button>
-        </div>
       </div>
-      {menuOpen && (
-        <div className="md:hidden flex flex-col p-4 gap-3">
-          <NavItem href="/markets">Markets</NavItem>
-          <NavItem href="/trade/btcusdt">Trade</NavItem>
-          <DepositButton/>
-          {session?.user && <Walletbutton />}
-        </div>
-      )}
     </div>
   )
 }

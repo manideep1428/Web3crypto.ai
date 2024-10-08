@@ -1,6 +1,6 @@
-'use client'
+"use client";
 
-import { Button } from "@/components/ui/button"
+import { Button } from "@/components/ui/button";
 import {
   ArrowRight,
   Bitcoin,
@@ -12,37 +12,44 @@ import {
   Menu,
   X,
   ChevronRight,
-} from "lucide-react"
-import Link from "next/link"
-import Image from "next/image"
-import { useRouter } from "next/navigation"
-import { motion, AnimatePresence } from "framer-motion"
-import { useState, useEffect } from "react"
-import { useSession } from "next-auth/react"
-import Footer from "@/components/core/Footer"
+} from "lucide-react";
+import Link from "next/link";
+import Image from "next/image";
+import { useRouter } from "next/navigation";
+import { motion, AnimatePresence } from "framer-motion";
+import { useState, useEffect } from "react";
+import { useSession } from "next-auth/react";
+import Footer from "@/components/core/Footer";
 
 export default function Component() {
-  const router = useRouter()
-  const session = useSession()
-  const [isMenuOpen, setIsMenuOpen] = useState(false)
+  const router = useRouter();
+  const session = useSession();
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [cryptoPrices, setCryptoPrices] = useState({
     BTC: 65000,
     ETH: 12000,
-  })
+  });
+
+  const navItems = [
+    { name: "Markets", href: "/markets" },
+    { name: "Trade", href: "/trade/btcusdt" },
+    { name: "Wallet", href: "/wallet" },
+    { name: "Learn", href: "/learn" },
+  ];
 
   useEffect(() => {
     const interval = setInterval(() => {
       setCryptoPrices({
         BTC: Math.random() * 10000 + 30000,
         ETH: Math.random() * 1000 + 2000,
-      })
-    }, 3000)
+      });
+    }, 3000);
 
-    return () => clearInterval(interval)
-  }, [])
+    return () => clearInterval(interval);
+  }, []);
 
   if (session.data?.user) {
-    router.push("/")
+    router.push("/");
   }
 
   const containerVariants = {
@@ -54,7 +61,7 @@ export default function Component() {
         delayChildren: 0.3,
       },
     },
-  }
+  };
 
   const itemVariants = {
     hidden: { y: 20, opacity: 0 },
@@ -66,7 +73,7 @@ export default function Component() {
         stiffness: 100,
       },
     },
-  }
+  };
 
   return (
     <div className="flex flex-col min-h-screen bg-gray-900 text-white">
@@ -79,13 +86,13 @@ export default function Component() {
             </span>
           </Link>
           <nav className="hidden md:flex space-x-8">
-            {["Markets", "Trade", "Wallet", "Learn"].map((item) => (
+            {navItems.map((item) => (
               <Link
-                key={item}
-                href="#"
+                key={item.href}
+                href={item.href}
                 className="text-gray-300 hover:text-yellow-500 transition-colors"
               >
-                {item}
+                {item.name}
               </Link>
             ))}
           </nav>
@@ -103,7 +110,11 @@ export default function Component() {
             className="md:hidden text-gray-300"
             onClick={() => setIsMenuOpen(!isMenuOpen)}
           >
-            {isMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
+            {isMenuOpen ? (
+              <X className="h-6 w-6" />
+            ) : (
+              <Menu className="h-6 w-6" />
+            )}
           </Button>
         </div>
       </header>
@@ -153,10 +164,17 @@ export default function Component() {
                   Confidence
                 </span>
               </motion.h1>
-              <motion.p variants={itemVariants} className="text-xl sm:text-2xl text-gray-400 max-w-3xl mx-auto">
-                Join the of Journey about Crypto on the {"world's "}most powerful crypto learning platform.
+              <motion.p
+                variants={itemVariants}
+                className="text-xl sm:text-2xl text-gray-400 max-w-3xl mx-auto"
+              >
+                Join the of Journey about Crypto on the {"world's "}most
+                powerful crypto learning platform.
               </motion.p>
-              <motion.div variants={itemVariants} className="flex flex-col sm:flex-row justify-center items-center space-y-4 sm:space-y-0 sm:space-x-4">
+              <motion.div
+                variants={itemVariants}
+                className="flex flex-col sm:flex-row justify-center items-center space-y-4 sm:space-y-0 sm:space-x-4"
+              >
                 <Button
                   onClick={() => router.push("/auth/signin")}
                   className="w-full sm:w-auto bg-yellow-500 text-gray-900 hover:bg-yellow-600 text-lg py-6 px-8"
@@ -164,7 +182,10 @@ export default function Component() {
                   Start Trading Now
                   <ArrowRight className="ml-2 h-5 w-5" />
                 </Button>
-                <Button variant="outline" className="w-full sm:w-auto text-yellow-500 border-yellow-500 hover:bg-yellow-500 hover:text-gray-900 text-lg py-6 px-8">
+                <Button
+                  variant="outline"
+                  className="w-full sm:w-auto text-yellow-500 border-yellow-500 hover:bg-yellow-500 hover:text-gray-900 text-lg py-6 px-8"
+                >
                   Explore Markets
                 </Button>
               </motion.div>
@@ -175,10 +196,26 @@ export default function Component() {
           <div className="container mx-auto px-4 sm:px-6">
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
               {[
-                { icon: Wallet, title: "Secure Wallet", description: "Store your crypto assets safely" },
-                { icon: BarChart2, title: "Advanced Trading", description: "Access powerful trading tools" },
-                { icon: Lock, title: "Bank-grade Security", description: "Your funds are always protected" },
-                { icon: Zap, title: "Instant Transactions", description: "Lightning-fast crypto transfers" },
+                {
+                  icon: Wallet,
+                  title: "Secure Wallet",
+                  description: "Store your crypto assets safely",
+                },
+                {
+                  icon: BarChart2,
+                  title: "Advanced Trading",
+                  description: "Access powerful trading tools",
+                },
+                {
+                  icon: Lock,
+                  title: "Bank-grade Security",
+                  description: "Your funds are always protected",
+                },
+                {
+                  icon: Zap,
+                  title: "Instant Transactions",
+                  description: "Lightning-fast crypto transfers",
+                },
               ].map((feature, index) => (
                 <motion.div
                   key={index}
@@ -189,7 +226,9 @@ export default function Component() {
                   className="bg-gray-700 p-6 rounded-lg shadow-lg hover:shadow-yellow-500/20 transition-shadow duration-300"
                 >
                   <feature.icon className="h-12 w-12 text-yellow-500 mb-4" />
-                  <h3 className="text-xl font-semibold mb-2">{feature.title}</h3>
+                  <h3 className="text-xl font-semibold mb-2">
+                    {feature.title}
+                  </h3>
                   <p className="text-gray-400">{feature.description}</p>
                 </motion.div>
               ))}
@@ -208,8 +247,18 @@ export default function Component() {
             </motion.h2>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
               {[
-                { icon: Bitcoin, name: "Bitcoin", symbol: "BTC", color: "yellow" },
-                { icon: Bitcoin , name: "Ethereum", symbol: "ETH", color: "blue" },
+                {
+                  icon: Bitcoin,
+                  name: "Bitcoin",
+                  symbol: "BTC",
+                  color: "yellow",
+                },
+                {
+                  icon: Bitcoin,
+                  name: "Ethereum",
+                  symbol: "ETH",
+                  color: "blue",
+                },
                 { icon: Globe, name: "Ripple", symbol: "XRP", color: "indigo" },
               ].map((crypto, index) => (
                 <motion.div
@@ -221,17 +270,21 @@ export default function Component() {
                   className="bg-gray-800 p-6 rounded-lg shadow-lg hover:shadow-yellow-500/20 transition-shadow duration-300 flex items-center justify-between"
                 >
                   <div className="flex items-center space-x-4">
-                    <crypto.icon className={`h-12 w-12 text-${crypto.color}-500`} />
+                    <crypto.icon
+                      className={`h-12 w-12 text-${crypto.color}-500`}
+                    />
                     <div>
                       <h3 className="text-xl font-semibold">{crypto.name}</h3>
                       <p className="text-gray-400">{crypto.symbol}</p>
                     </div>
                   </div>
                   <div className="text-right">
-                    <p className="text-2xl font-bold">
-                      $ 0.00 
-                    </p>
-                    <p className={`text-sm ${index % 2 === 0 ? "text-green-500" : "text-red-500"}`}>
+                    <p className="text-2xl font-bold">$ 0.00</p>
+                    <p
+                      className={`text-sm ${
+                        index % 2 === 0 ? "text-green-500" : "text-red-500"
+                      }`}
+                    >
                       {index % 2 === 0 ? "+" : "-"}
                       {(Math.random() * 5).toFixed(2)}%
                     </p>
@@ -240,7 +293,10 @@ export default function Component() {
               ))}
             </div>
             <div className="text-center mt-12">
-              <Button variant="outline" className="text-yellow-500 border-yellow-500 hover:bg-yellow-500 hover:text-gray-900">
+              <Button
+                variant="outline"
+                className="text-yellow-500 border-yellow-500 hover:bg-yellow-500 hover:text-gray-900"
+              >
                 View All Markets
                 <ChevronRight className="ml-2 h-4 w-4" />
               </Button>
@@ -257,11 +313,18 @@ export default function Component() {
                 viewport={{ once: true }}
                 className="space-y-6"
               >
-                <motion.h2 variants={itemVariants} className="text-3xl sm:text-4xl font-bold">
+                <motion.h2
+                  variants={itemVariants}
+                  className="text-3xl sm:text-4xl font-bold"
+                >
                   Start Your Crypto Journey Today
                 </motion.h2>
-                <motion.p variants={itemVariants} className="text-xl text-gray-400">
-                  Join millions of users worldwide and experience the power of decentralized finance.
+                <motion.p
+                  variants={itemVariants}
+                  className="text-xl text-gray-400"
+                >
+                  Join millions of users worldwide and experience the power of
+                  decentralized finance.
                 </motion.p>
                 <motion.ul variants={containerVariants} className="space-y-4">
                   {[
@@ -270,7 +333,11 @@ export default function Component() {
                     "24/7 access to global markets",
                     "Advanced trading tools and analytics",
                   ].map((item, index) => (
-                    <motion.li key={index} variants={itemVariants} className="flex items-center space-x-3">
+                    <motion.li
+                      key={index}
+                      variants={itemVariants}
+                      className="flex items-center space-x-3"
+                    >
                       <svg
                         className="h-5 w-5 text-yellow-500"
                         fill="none"
@@ -315,7 +382,7 @@ export default function Component() {
           </div>
         </section>
       </main>
-      <Footer/>
+      <Footer />
     </div>
-  )
+  );
 }

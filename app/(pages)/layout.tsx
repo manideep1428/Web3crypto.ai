@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Appbar } from '@/components/core/Appbar'
 import SideNavbar from '@/components/core/sideNavBar'
 
@@ -11,6 +11,14 @@ export default function RootLayout({
 }) {
   const [isOpen, setIsOpen] = useState(false)
   const toggleSidebar = () => setIsOpen(!isOpen)
+  
+  useEffect(()=>{
+  const innerWidth = window.innerWidth
+  
+  if(innerWidth > 768) {
+      setIsOpen(true)
+  }
+  }, [innerWidth])
   
   return (
       <html lang="en" suppressHydrationWarning>

@@ -1,33 +1,18 @@
-import { authOptions } from "@/lib/auth";
-import { prisma } from "@/lib/prisma";
-import { getServerSession } from "next-auth";
-import { useEffect, useState } from "react";
+'use client'
+
+import { useState, useEffect } from "react";
+import { getBalance } from "@/app/(server)/actions/getBalance";
 
 export default function useBalance() {
   const [balance, setBalance] = useState(0);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-
-    async function getBalance() {
-        const session = await getServerSession(authOptions);
-        if (!session?.user?.email) {
-          return
-        }
-        const user = await prisma.user.findUnique({
-          where: {
-            email: session?.user?.email,
-          },
-        });
-        const balance = user?.balance
-        return balance
-      }
-      getBalance().then((balance) => {
-        //@ts-ignore
-        setBalance(balance);
-        setLoading(false);
-      })
-    
+    getBalance().then((balance) => {
+      setBalance(balance);
+      setLoading(false);
+    });
   }, []);
-  return { balance , loading };
+
+  return { balance, loading };
 }
