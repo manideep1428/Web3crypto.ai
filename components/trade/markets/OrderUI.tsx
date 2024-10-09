@@ -22,6 +22,7 @@ import {
   setMarketPrice,
 } from "@/store/slices/cryptoOrders";
 import { useToast } from "@/components/ui/use-toast";
+import OrderDialog from "@/components/orderToast/OrderToast";
 
 export function OrderUI({ market }: { market: string }) {
   const dispatch = useDispatch();
@@ -30,9 +31,11 @@ export function OrderUI({ market }: { market: string }) {
   );
   const [image, setImage] = useState("");
   const [loading, setLoading] = useState(false);
+  const [dialogOpen, setDialogOpen] = useState(false)
+  const [orderDetails, setOrderDetails] = useState({ type: 'buy', crypto: '', amount: '', price: '' })
   const ws = useRef<WebSocket | null>(null);
   const router = useRouter();
-  const { toast }  = useToast();
+  const { toast } = useToast();
 
   useEffect(() => {
     if (typeof window !== "undefined") {
@@ -57,39 +60,28 @@ export function OrderUI({ market }: { market: string }) {
     };
   }, [market, dispatch]);
 
+  
   const handleOrder = async () => {
     try {
-      setLoading(true);
+      setLoading(true)
       if (activeTab === "buy") {
         const response = await axios.post("/api/buy-crypto", {
           market,
           marketPrice,
           price,
-        });
-        if (!response.data.sucess) return new Error(response.data.message);
-        toast({
-          title: "Order placed",
-          description: `You have successfully placed a buy order for ${quantity} ${market} at ${price} USD.`,
-          action: (
-            <ToastAction
-              altText="See the order details"
-              onClick={() => router.push("/orders")}
-            >
-              Details
-            </ToastAction>
-          ),
-        });
+        })
+        if (!response.data.success) throw new Error(response.data.message)
+        setOrderDetails({ type: 'buy', crypto: market, amount: quantity, price })
+        setDialogOpen(true)
       } else if (activeTab === "sell") {
         const res = await axios.post("/api/sell-crypto", {
           market,
           marketPrice,
           price,
-        });
-        if (!res.data.success) return new Error(res.data.message);
-        toast({
-          title: "Order Placed",
-          description: `You have successfully sold an order for ${quantity} ${market} at ${price} USD.`,
-        });
+        })
+        if (!res.data.success) throw new Error(res.data.message)
+        setOrderDetails({ type: 'sell', crypto: market, amount: quantity, price })
+        setDialogOpen(true)
       }
     } catch (error) {
       toast({
@@ -97,11 +89,11 @@ export function OrderUI({ market }: { market: string }) {
         description: "Please Try again",
         variant: "destructive",
         action: <ToastAction altText="try again"> Try again </ToastAction>,
-      });
+      })
     } finally {
-      setLoading(false);
+      setLoading(false)
     }
-  };
+  }
 
   const handlePriceChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const newPrice = e.target.value;
@@ -129,7 +121,7 @@ export function OrderUI({ market }: { market: string }) {
 
   const calculateFee = () => {
     const total = parseFloat(price) * parseFloat(quantity);
-    return isNaN(total) ? "0.00000000" : (total * 0.02).toFixed(8); 
+    return isNaN(total) ? "0.00000000" : (total * 0.02).toFixed(8);
   };
 
   const calculateTotal = () => {
@@ -259,6 +251,14 @@ export function OrderUI({ market }: { market: string }) {
           </div>
         </CardContent>
       </Tabs>
+      <OrderDialog
+        isOpen={dialogOpen}
+        onClose={() => setDialogOpen(false)}
+        type={orderDetails.type as 'buy' | 'sell'}
+        crypto={orderDetails.crypto}
+        amount={orderDetails.amount}
+        price={orderDetails.price}
+      />
     </Card>
   );
 }

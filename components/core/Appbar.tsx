@@ -1,34 +1,24 @@
 import { useState } from "react"
 import { usePathname, useRouter } from "next/navigation"
 import Link from "next/link"
-import { HandCoins, Menu, MenuIcon, User } from "lucide-react"
+import { MenuIcon, User } from "lucide-react"
 import { signIn, useSession } from "next-auth/react"
-import { Input } from "../ui/input"
-import { Button } from "../ui/button"
+import { Input } from "@/components/ui/input"
+import { Button } from "@/components/ui/button"
 import UserDetails from "../account/UserDetails"
-import Walletbutton from "../WalletButton"
-import DepositButton from "../DepositButton"
-
+import WalletButton from "../WalletButton"
 
 export const Appbar = ({ toggleSidebar }: { toggleSidebar: () => void }) => {
   const pathname = usePathname()
   const router = useRouter()
-  const [menuOpen, setMenuOpen] = useState(false)
   const { data: session } = useSession()
-
-  const handleDeposit = () => {
-    if (session?.user) {
-      router.push("/deposit")
-    } else {
-      console.log("Please Sign in")
-    }
-  }
 
   const NavItem = ({ href, children }: { href: string; children: React.ReactNode }) => (
     <Link
       href={href}
-      className={`text-sm pt-1 cursor-pointer ${pathname.startsWith(href) ? "text-white" : "text-slate-500"
-        }`}
+      className={`text-sm pt-1 cursor-pointer ${
+        pathname.startsWith(href) ? "text-white" : "text-slate-500"
+      }`}
     >
       {children}
     </Link>
@@ -53,20 +43,19 @@ export const Appbar = ({ toggleSidebar }: { toggleSidebar: () => void }) => {
           </div>
         </div>
         <div className="flex md:flex flex-row justify-center gap-5 items-center">
-          <div>
-          <DepositButton />
-          </div>
-          <Walletbutton/>
+          <WalletButton />
           <Input
             type="search"
             placeholder="Search markets"
-            className="hidden md:max-w-sm"
+            className="hidden md:block md:max-w-sm"
           />
           <div className="mr-2">
             {session?.user ? (
               <UserDetails />
             ) : (
-              <Button className="rounded-full bg-white text-black dark:text-white dark:bg-black" onClick={() => signIn("google")}><User/></Button>
+              <Button className="rounded-full bg-white text-black dark:text-white dark:bg-black" onClick={() => signIn("google")}>
+                <User />
+              </Button>
             )}
           </div>
         </div>
