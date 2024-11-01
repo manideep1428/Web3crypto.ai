@@ -26,6 +26,7 @@ import OrderDialog from "@/components/orderToast/OrderToast";
 
 export function OrderUI({ market }: { market: string }) {
   const dispatch = useDispatch();
+  //@ts-ignore
   const { price, quantity, activeTab, orderType, marketPrice } = useSelector(
     (state: RootState) => state.order
   );
