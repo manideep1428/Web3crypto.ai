@@ -404,7 +404,7 @@ export default function Component() {
                   </div>
                   <div className="mt-6 text-right">
                     <p className={`text-2xl font-bold ${isDarkMode ? 'text-white' : 'text-gray-800'}`}>
-                      ${cryptoPrices[crypto.symbol]?.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+                      ${cryptoPrices[crypto.symbol as keyof typeof cryptoPrices]?.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
                     </p>
                     <p className={`text-sm ${index % 2 === 0 ? "text-green-500" : "text-red-500"}`}>
                       {index % 2 === 0 ? "+" : "-"}
