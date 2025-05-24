@@ -17,7 +17,7 @@ export const Appbar = ({ toggleSidebar }: { toggleSidebar: () => void }) => {
     <Link
       href={href}
       className={`text-sm pt-1 cursor-pointer ${
-        pathname.startsWith(href) ? "text-white" : "text-slate-500"
+        pathname.startsWith(href) ? "text-primary" : "text-muted-foreground"
       }`}
     >
       {children}
@@ -25,7 +25,7 @@ export const Appbar = ({ toggleSidebar }: { toggleSidebar: () => void }) => {
   )
 
   return (
-    <div className="text-black bg-white dark:text-white dark:bg-black border-b border-slate-800">
+    <div className="text-foreground bg-background border-b border-border">
       <div className="flex justify-between items-center p-2">
         <div className="flex items-center">
           <button
@@ -34,7 +34,7 @@ export const Appbar = ({ toggleSidebar }: { toggleSidebar: () => void }) => {
           >
             <MenuIcon className="h-6 w-6" />
           </button>
-          <Link href="/markets" className="text-xl pl-4 cursor-pointer font-semibold dark:text-white">
+          <Link href="/markets" className="text-xl pl-4 cursor-pointer font-semibold text-foreground">
             <i>WebCrypto.ai</i>
           </Link>
           <div className="hidden md:flex m-auto gap-6 p-4">
@@ -53,7 +53,7 @@ export const Appbar = ({ toggleSidebar }: { toggleSidebar: () => void }) => {
             {session?.user ? (
               <UserDetails />
             ) : (
-              <Button className="rounded-full bg-white text-black dark:text-white dark:bg-black" onClick={() => signIn("google")}>
+              <Button className="rounded-full bg-card text-card-foreground" onClick={() => signIn("google")}>
                 <User />
               </Button>
             )}

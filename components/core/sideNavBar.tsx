@@ -40,7 +40,7 @@ export default function SideNavbar({ isOpen }: SideNavbarProps) {
           <Link
             key={index}
             href={item.href}
-            className={`${pathName === item.href ? 'bg-muted-foreground/30  rounded-sm' : ''}  flex p-6 space-x-2 text-muted-foreground hover:text-primary py-2 `}
+            className={`${pathName === item.href ? 'bg-accent text-accent-foreground rounded-sm' : 'text-muted-foreground'} flex p-6 space-x-2 hover:text-primary py-2 `}
           >
             <span className='flex justify-center items-center space-x-2'>
               <item.icon className="h-4 w-4" />

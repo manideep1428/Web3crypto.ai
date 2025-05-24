@@ -3,9 +3,9 @@ import React, { useEffect, useState } from "react";
 
 export default function UseMarketWebsockets(market:string) {
   const [marketData, setMarketData] = useState<MarketData | null>(null);
-  const [priceChangeColor, setPriceChangeColor] = useState<
-    "text-green-500" | "text-red-500"
-  >("text-green-500");
+  const [priceChangeClassName, setPriceChangeClassName] = useState<
+    "text-success" | "text-destructive"
+  >("text-success");
 
   useEffect(() => {
     const ws = new WebSocket(
@@ -15,13 +15,13 @@ export default function UseMarketWebsockets(market:string) {
     ws.onmessage = (event) => {
       const data: MarketData = JSON.parse(event.data);
       setMarketData(data);
-      setPriceChangeColor(
-        parseFloat(data.P) >= 0 ? "text-green-500" : "text-red-500"
+      setPriceChangeClassName(
+        parseFloat(data.P) >= 0 ? "text-success" : "text-destructive"
       );
     };
 
     return () => ws.close();
   }, [market]);
 
-  return { marketData , priceChangeColor  }
+  return { marketData , priceChangeClassName  }
 }

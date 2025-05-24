@@ -1,6 +1,10 @@
 import './globals.css'
 import NextTopLoader from 'nextjs-toploader';
 import { Providers } from './Providers';
+import { Inter } from 'next/font/google';
+
+const inter = Inter({ subsets: ['latin'], weights: ['400', '500', '600', '700'] });
+
 export default function RootLayout({
   children,
 }: {
@@ -9,7 +13,7 @@ export default function RootLayout({
 
   return (
       <html lang="en">
-        <body>
+        <body className={inter.className}>
            <NextTopLoader/>
            <Providers>
            {children}
