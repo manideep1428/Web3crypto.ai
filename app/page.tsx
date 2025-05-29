@@ -142,7 +142,7 @@ export default function Component() {
               <Link
                 key={item.href}
                 href={item.href}
-                className={`${isDarkMode ? 'text-gray-300 hover:text-yellow-500' : 'text-gray-700 hover:text-yellow-600'} transition-colors`}
+                className="text-muted-foreground hover:text-primary transition-colors"
               >
                 {item.name}
               </Link>
@@ -151,10 +151,7 @@ export default function Component() {
           
           {/* Desktop Action Buttons */}
           <div className="hidden md:flex items-center space-x-4">
-            <Button
-              onClick={() => router.push("/auth/signin")}
-              className="bg-yellow-500 text-gray-900 hover:bg-yellow-600"
-            >
+            <Button variant="default" onClick={() => router.push("/auth/signin")}>
               Get Started
             </Button>
             
@@ -163,7 +160,8 @@ export default function Component() {
               variant="ghost"
               size="icon"
               onClick={toggleDarkMode}
-              className={`${isDarkMode ? 'text-gray-300 hover:text-yellow-500' : 'text-gray-700 hover:text-yellow-600'}`}
+              aria-label="Toggle dark mode"
+              className="text-muted-foreground hover:text-primary"
             >
               {isDarkMode ? (
                 <Sun className="h-5 w-5" />
@@ -179,7 +177,8 @@ export default function Component() {
               variant="ghost"
               size="icon"
               onClick={toggleDarkMode}
-              className={`${isDarkMode ? 'text-gray-300' : 'text-gray-700'}`}
+              aria-label="Toggle dark mode"
+              className="text-muted-foreground hover:text-primary"
             >
               {isDarkMode ? (
                 <Sun className="h-5 w-5" />
@@ -191,8 +190,9 @@ export default function Component() {
             <Button
               variant="ghost"
               size="icon"
-              className={`${isDarkMode ? 'text-gray-300' : 'text-gray-700'}`}
+              className="md:hidden text-muted-foreground hover:text-primary"
               onClick={() => setIsMenuOpen(!isMenuOpen)}
+              aria-label="Toggle menu"
             >
               {isMenuOpen ? (
                 <X className="h-6 w-6" />
@@ -217,17 +217,12 @@ export default function Component() {
               <Link
                 key={item.name}
                 href={item.href}
-                className={`block py-2 ${isDarkMode ? 
-                  'text-gray-300 hover:text-yellow-500' : 
-                  'text-gray-700 hover:text-yellow-600'} transition-colors`}
+                className="block py-2 text-muted-foreground hover:text-primary transition-colors"
               >
                 {item.name}
               </Link>
             ))}
-            <Button
-              onClick={() => router.push("/auth/signin")}
-              className="w-full mt-4 bg-yellow-500 text-gray-900 hover:bg-yellow-600"
-            >
+            <Button variant="default" className="w-full mt-4" onClick={() => router.push("/auth/signin")}>
               Get Started
             </Button>
           </motion.nav>
@@ -336,7 +331,7 @@ export default function Component() {
                   <h3 className="text-xl font-semibold mb-3 bg-gradient-to-r from-yellow-400 to-yellow-600 bg-clip-text text-transparent">
                     {feature.title}
                   </h3>
-                  <p className={isDarkMode ? "text-gray-400" : "text-gray-600"}>{feature.description}</p>
+                  <p className="text-muted-foreground">{feature.description}</p>
                 </motion.div>
               ))}
             </div>

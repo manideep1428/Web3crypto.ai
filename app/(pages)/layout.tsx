@@ -23,9 +23,7 @@ export default function RootLayout({
   
   return (
         <div className="flex flex-col min-h-screen">
-          <div className='fixed top-0 left-0 w-full z-50'>
-            <Appbar toggleSidebar={toggleSidebar}/>
-          </div>
+          <Appbar toggleSidebar={toggleSidebar}/>
           <div className="flex flex-grow pt-16">
             <SideNavbar isOpen={isOpen} />
             <div className={`flex-grow p-4 transition-all duration-300 ${isOpen ? 'ml-[240px]' : ''}`}>
