@@ -15,6 +15,7 @@ import {
   TrendingUp,
 } from 'lucide-react'
 import { usePathname } from 'next/navigation'
+import { Button } from '@/components/ui/button'
 
 interface SideNavbarProps {
   isOpen: boolean
@@ -22,7 +23,7 @@ interface SideNavbarProps {
 
 export default function SideNavbar({ isOpen }: SideNavbarProps) {
   const { theme, setTheme } = useTheme()
-  const pathName = usePathname();
+  const pathName = usePathname()
 
   const menuItems = [
     { icon: TrendingUp, label: 'Markets', href: '/markets' },
@@ -34,46 +35,54 @@ export default function SideNavbar({ isOpen }: SideNavbarProps) {
   ]
 
   return (
-    <div className={`fixed top-16 left-0 h-full bg-background  transition-all duration-300 ${isOpen ? 'w-[240px]' : 'w-0'} overflow-hidden z-40`}>
-      <nav className="h-full py-20 px-4 flex flex-col justify-center gap-2">
+    <div
+      className={`fixed top-16 left-0 h-full bg-background transition-all duration-300 ${
+        isOpen ? 'w-[240px]' : 'w-0'
+      } overflow-hidden z-40`}
+    >
+      <nav className="h-full flex flex-col p-4 gap-y-1">
         {menuItems.map((item, index) => (
           <Link
             key={index}
             href={item.href}
-            className={`${pathName === item.href ? 'bg-muted-foreground/30  rounded-sm' : ''}  flex p-6 space-x-2 text-muted-foreground hover:text-primary py-2 `}
+            className={`flex items-center space-x-3 p-2 rounded-md text-sm font-medium transition-colors ${
+              pathName === item.href
+                ? 'bg-primary/10 text-primary font-semibold' // Active state
+                : 'text-muted-foreground hover:bg-primary/5 hover:text-primary' // Inactive state
+            }`}
           >
-            <span className='flex justify-center items-center space-x-2'>
-              <item.icon className="h-4 w-4" />
-              <span>{item.label}</span>
-            </span>
+            <item.icon className="h-5 w-5" />
+            <span>{item.label}</span>
           </Link>
         ))}
-        <div className="mt-auto space-y-4">
-          <div>
-            <h4 className="text-sm font-medium mb-2">Social Connect</h4>
-            <div className="flex space-x-2">
-              <button className="p-2 rounded-full bg-muted hover:bg-muted-foreground/20">
-                <FacebookIcon className="h-4 w-4" />
-              </button>
-              <button className="p-2 rounded-full bg-muted hover:bg-muted-foreground/20">
-                <TwitterIcon className="h-4 w-4" />
-              </button>
-            </div>
+        <div className="mt-auto space-y-1 px-2 pb-2">
+          <h4 className="px-2 pt-2 text-xs font-semibold text-muted-foreground/80 uppercase tracking-wider">
+            Social Connect
+          </h4>
+          <div className="flex space-x-1">
+            <Button variant="ghost" size="icon" aria-label="Facebook">
+              <FacebookIcon className="h-5 w-5 text-muted-foreground hover:text-primary" />
+            </Button>
+            <Button variant="ghost" size="icon" aria-label="Twitter">
+              <TwitterIcon className="h-5 w-5 text-muted-foreground hover:text-primary" />
+            </Button>
           </div>
-          <button
-            className="flex items-center space-x-2 text-muted-foreground hover:text-primary"
+          <Button
+            variant="ghost"
             onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
+            className="w-full justify-start flex items-center space-x-3 text-sm font-medium text-muted-foreground hover:text-primary hover:bg-primary/5 p-2"
           >
-            {theme === 'dark' ? <SunIcon className="h-4 w-4" /> : <MoonIcon className="h-4 w-4" />}
+            {theme === 'dark' ? <SunIcon className="h-5 w-5" /> : <MoonIcon className="h-5 w-5" />}
             <span>{theme === 'dark' ? 'Light Mode' : 'Dark Mode'}</span>
-          </button>
-          <button
-            className="flex items-center space-x-2 text-muted-foreground hover:text-primary"
-            onClick={() => console.log('Logout')}
+          </Button>
+          <Button
+            variant="ghost"
+            onClick={() => console.log('Logout triggered via console')}
+            className="w-full justify-start flex items-center space-x-3 text-sm font-medium text-muted-foreground hover:text-primary hover:bg-primary/5 p-2"
           >
-            <LogOutIcon className="h-4 w-4" />
+            <LogOutIcon className="h-5 w-5" />
             <span>Logout</span>
-          </button>
+          </Button>
         </div>
       </nav>
     </div>
