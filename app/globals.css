@@ -1,17 +1,19 @@
+@import url('https://fonts.googleapis.com/css2?family=Merriweather:wght@400;700&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 @layer base {
   :root {
-    --background: 220 20% 97%; /* Very Light Gray/Off-White */
+    --background: 0 0% 100%; /* White */
     --foreground: 220 15% 15%; /* Dark Gray for text */
     --card: 0 0% 100%; /* White */
     --card-foreground: 220 15% 15%;
     --popover: 0 0% 100%;
     --popover-foreground: 220 15% 15%;
-    --primary: 45 85% 50%; /* Vibrant Yellow/Gold */
-    --primary-foreground: 220 15% 10%; /* Dark Gray/Black for text on yellow */
+    --primary: 45 85% 50%; /* Vibrant Gold/Yellow */
+    --primary-foreground: 220 15% 10%; /* Dark color for text on primary elements */
     --secondary: 220 15% 90%; /* Light Neutral Gray */
     --secondary-foreground: 220 15% 20%;
     --muted: 220 15% 75%;
@@ -26,25 +28,25 @@
     --radius: 0.5rem;
   }
   .dark {
-    --background: 220 15% 10%; /* Dark Gray */
-    --foreground: 220 10% 85%; /* Light Gray */
-    --card: 220 15% 13%; /* Slightly Lighter Dark Gray, for card backgrounds */
+    --background: 220 15% 10%; /* Deep Gray */
+    --foreground: 220 10% 85%; /* Light Gray/Off-White for text */
+    --card: 220 15% 13%; /* Slightly Lighter Dark Gray */
     --card-foreground: 220 10% 85%;
     --popover: 220 15% 13%;
     --popover-foreground: 220 10% 85%;
-    --primary: 45 90% 55%; /* Vibrant Yellow/Gold */
-    --primary-foreground: 220 15% 10%; /* Dark Gray/Black for text on yellow */
+    --primary: 45 85% 50%; /* Vibrant Gold/Yellow */
+    --primary-foreground: 220 15% 10%; /* Dark color for text on primary elements */
     --secondary: 220 10% 30%; /* Mid-Gray */
     --secondary-foreground: 220 10% 85%;
-    --muted: 220 10% 50%; /* For less prominent text */
+    --muted: 220 10% 50%;
     --muted-foreground: 220 10% 70%;
-    --accent: 45 90% 55%; /* Vibrant Yellow/Gold */
+    --accent: 45 85% 50%; /* Vibrant Yellow/Gold */
     --accent-foreground: 220 15% 10%;
     --destructive: 0 70% 50%;
     --destructive-foreground: 0 0% 100%;
-    --border: 220 15% 25%; /* Subtle border, slightly lighter than background */
+    --border: 220 15% 25%; /* Subtle border */
     --input: 220 15% 20%; /* Input field background */
-    --ring: 45 90% 55%; /* Focus ring - Yellow/Gold */
+    --ring: 45 85% 50%; /* Focus ring - Yellow/Gold */
   }
 }
 
@@ -54,7 +56,7 @@
   }
   body {
     @apply bg-background text-foreground;
-    font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+    font-family: 'Merriweather', sans-serif;
   }
 }
 
