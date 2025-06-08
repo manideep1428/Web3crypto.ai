@@ -201,7 +201,7 @@ export default function Component() {
   if (loading) return <CryptoListSkeleton />
 
   return (
-    <div className="w-full px-4 sm:px-6 lg:px-8 space-y-6">
+    <div className="w-full space-y-6"> {/* Removed px-4 sm:px-6 lg:px-8 */}
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-4 space-y-2 sm:space-y-0">
         <h2 className="text-2xl font-bold">
           {activeTab === "all" ? "All Cryptocurrencies" : `Sorted by ${activeTab === "rank" ? "Market Cap Rank" : activeTab}`}
