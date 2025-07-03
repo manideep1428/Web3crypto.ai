@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, useEffect } from 'react'
+import Link from 'next/link' // Import Link
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { CheckCircle, XCircle, TrendingUp, TrendingDown, Package2, Clock } from 'lucide-react'
@@ -83,10 +84,11 @@ export default function OrderDisplay() {
   return (
     <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
       {orders.map((order) => (
-        <Card key={order.id} className="overflow-hidden">
-          <CardHeader className={`${order.transactionType === 'Buy' ? 'bg-green-100' : 'bg-red-100'} text-foreground`}>
-            <CardTitle className="flex items-center justify-between">
-              <span>{order.crypto.currency}</span>
+        <Link key={order.id} href={`/orders/${order.id}`} passHref>
+          <Card className="overflow-hidden hover:shadow-lg transition-shadow duration-200 cursor-pointer h-full flex flex-col">
+            <CardHeader className={`${order.transactionType === 'Buy' ? 'bg-green-100' : 'bg-red-100'} text-foreground`}>
+              <CardTitle className="flex items-center justify-between">
+                <span>{order.crypto.currency}</span>
               <Badge variant={order.transactionType === 'Buy' ? 'default' : 'secondary'}>
                 {order.transactionType}
               </Badge>
@@ -111,7 +113,8 @@ export default function OrderDisplay() {
               </span>
             </div>
           </CardContent>
-        </Card>
+          </Card>
+        </Link>
       ))}
     </div>
   )
