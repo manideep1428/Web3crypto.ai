@@ -1,0 +1,28 @@
+{
+  "extends": "./tsconfig.json", // Inherit from the main tsconfig
+  "compilerOptions": {
+    "module": "commonjs", // WebSocket server will run in Node.js, CommonJS is typical
+    "outDir": "dist",     // Output directory for compiled server files
+    "rootDir": "app/(server)/ws", // Specify root directory of server source files
+    "noEmit": false,      // We want to emit files for this config
+    "isolatedModules": false, // Not strictly needed for server build usually
+    // Ensure other necessary options like target, esModuleInterop, etc., are inherited or set
+    // Remove Next.js specific plugin if it causes issues for server build:
+    // "plugins": [{ "name": "next" }] // If inherited and causes issues, remove or override
+  },
+  "include": [
+    "app/(server)/ws/**/*.ts" // Only include files for the WebSocket server
+  ],
+  "exclude": [
+    "node_modules",
+    ".next",
+    "app/(pages)", // Exclude Next.js pages
+    "app/api",     // Exclude Next.js API routes handled by Next.js itself
+    "components",
+    "lib",         // Might contain client-side specific code not suitable for commonjs
+    "public",
+    "store",
+    "hooks"
+    // Add other Next.js specific directories if they shouldn't be processed by this tsconfig
+  ]
+}

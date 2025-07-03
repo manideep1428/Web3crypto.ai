@@ -3,6 +3,7 @@
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { User } from '@prisma/client'
+import { CheckCircleIcon, XCircleIcon } from '@heroicons/react/24/outline' // Or lucide-react if preferred
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
@@ -10,7 +11,7 @@ import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/componen
 import { toast } from "@/components/ui/use-toast"
 
 type ProfileFormProps = {
-  user: Pick<User, 'id' | 'name' | 'email' | 'image' | 'balance' | 'createdAt' | 'updatedAt'>
+  user: Pick<User, 'id' | 'name' | 'email' | 'image' | 'emailVerified' | 'balance' | 'createdAt' | 'updatedAt'>
 }
 
 export default function ProfileForm({ user }: ProfileFormProps) {
@@ -85,6 +86,21 @@ export default function ProfileForm({ user }: ProfileFormProps) {
               onChange={handleChange}
               disabled={true}
             />
+          </div>
+          <div className="space-y-2">
+            <Label>Email Verified</Label>
+            <div className="flex items-center space-x-2 p-2 border rounded-md bg-gray-50">
+              {user.emailVerified ? (
+                <CheckCircleIcon className="h-5 w-5 text-green-500" />
+              ) : (
+                <XCircleIcon className="h-5 w-5 text-red-500" />
+              )}
+              <span>
+                {user.emailVerified
+                  ? `Verified on ${new Date(user.emailVerified).toLocaleDateString()}`
+                  : 'Not Verified'}
+              </span>
+            </div>
           </div>
           <div className="space-y-2">
             <Label htmlFor="image">Profile Image URL</Label>
