@@ -12,41 +12,41 @@
     --card-foreground: 220 15% 15%;
     --popover: 0 0% 100%;
     --popover-foreground: 220 15% 15%;
-    --primary: 45 85% 50%; /* Vibrant Gold/Yellow */
-    --primary-foreground: 220 15% 10%; /* Dark color for text on primary elements */
-    --secondary: 220 15% 90%; /* Light Neutral Gray */
-    --secondary-foreground: 220 15% 20%;
-    --muted: 220 15% 75%;
-    --muted-foreground: 220 15% 45%;
-    --accent: 45 85% 50%; /* Vibrant Yellow/Gold */
-    --accent-foreground: 220 15% 10%;
-    --destructive: 0 70% 50%;
-    --destructive-foreground: 0 0% 100%;
-    --border: 220 15% 85%; /* Light gray border */
-    --input: 220 15% 92%; /* Light gray input background */
-    --ring: 45 85% 50%; /* Focus ring - Yellow/Gold */
+    --primary: 24 95% 53%; /* Vibrant Orange */
+    --primary-foreground: 20 14.3% 4.1%;
+    --secondary: 240 4.8% 95.9%;
+    --secondary-foreground: 240 5.9% 10%;
+    --muted: 240 4.8% 95.9%;
+    --muted-foreground: 240 3.8% 46.1%;
+    --accent: 240 4.8% 95.9%;
+    --accent-foreground: 240 5.9% 10%;
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 240 5.9% 90%;
+    --input: 240 5.9% 90%;
+    --ring: 24 95% 53%; /* Vibrant Orange */
     --radius: 0.5rem;
   }
   .dark {
-    --background: 220 15% 10%; /* Deep Gray */
-    --foreground: 220 10% 85%; /* Light Gray/Off-White for text */
-    --card: 220 15% 13%; /* Slightly Lighter Dark Gray */
-    --card-foreground: 220 10% 85%;
-    --popover: 220 15% 13%;
-    --popover-foreground: 220 10% 85%;
-    --primary: 45 85% 50%; /* Vibrant Gold/Yellow */
-    --primary-foreground: 220 15% 10%; /* Dark color for text on primary elements */
-    --secondary: 220 10% 30%; /* Mid-Gray */
-    --secondary-foreground: 220 10% 85%;
-    --muted: 220 10% 50%;
-    --muted-foreground: 220 10% 70%;
-    --accent: 45 85% 50%; /* Vibrant Yellow/Gold */
-    --accent-foreground: 220 15% 10%;
-    --destructive: 0 70% 50%;
-    --destructive-foreground: 0 0% 100%;
-    --border: 220 15% 25%; /* Subtle border */
-    --input: 220 15% 20%; /* Input field background */
-    --ring: 45 85% 50%; /* Focus ring - Yellow/Gold */
+    --background: 240 10% 3.9%;
+    --foreground: 0 0% 98%;
+    --card: 240 10% 3.9%;
+    --card-foreground: 0 0% 98%;
+    --popover: 240 10% 3.9%;
+    --popover-foreground: 0 0% 98%;
+    --primary: 24 95% 53%; /* Vibrant Orange */
+    --primary-foreground: 20 14.3% 4.1%;
+    --secondary: 240 3.7% 15.9%;
+    --secondary-foreground: 0 0% 98%;
+    --muted: 240 3.7% 15.9%;
+    --muted-foreground: 240 5% 64.9%;
+    --accent: 240 3.7% 15.9%;
+    --accent-foreground: 0 0% 98%;
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 240 3.7% 15.9%;
+    --input: 240 3.7% 15.9%;
+    --ring: 24 95% 53%; /* Vibrant Orange */
   }
 }
 

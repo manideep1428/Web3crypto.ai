@@ -21,22 +21,25 @@ export default function PagesLayout({ // Renamed RootLayout to PagesLayout for c
   children: React.ReactNode
 }) {
   const pathname = usePathname();
-  const [isOpen, setIsOpen] = useState(false)
-  const toggleSidebar = () => setIsOpen(!isOpen)
+  const [isOpen, setIsOpen] = useState(true);
+  const [isCollapsed, setIsCollapsed] = useState(false);
+
+  const toggleSidebar = () => setIsOpen(!isOpen);
+  const toggleCollapse = () => setIsCollapsed(!isCollapsed);
   
   useEffect(()=>{
-  const innerWidth = window.innerWidth
-  
-  if(innerWidth > 768) {
-      setIsOpen(true)
-  }
+    const innerWidth = window.innerWidth;
+    if(innerWidth < 768) {
+        setIsOpen(false);
+        setIsCollapsed(true);
+    }
   }, [])
   
   return (
         <div className="flex flex-col min-h-screen bg-background"> {/* Added bg-background here for safety */}
           <Appbar toggleSidebar={toggleSidebar}/>
           <div className="flex flex-grow pt-16"> {/* This pt-16 is important for Appbar offset */}
-            <SideNavbar isOpen={isOpen} />
+            <SideNavbar isOpen={isOpen} isCollapsed={isCollapsed} toggleCollapse={toggleCollapse} />
             <AnimatePresence mode="wait">
               <motion.main
                 key={pathname}
@@ -44,7 +47,7 @@ export default function PagesLayout({ // Renamed RootLayout to PagesLayout for c
                 initial="initial"
                 animate="animate"
                 exit="exit"
-                className={`flex-grow p-4 md:p-6 transition-all duration-300 ${isOpen ? 'ml-[240px]' : 'ml-0'}`} // Ensured ml-0 when closed, md:p-6 added
+                className={`flex-grow p-4 md:p-6 transition-all duration-300 ${isOpen ? (isCollapsed ? 'ml-20' : 'ml-64') : 'ml-0'}`}
               >
                 {children}
               </motion.main>
