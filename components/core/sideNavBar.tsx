@@ -8,17 +8,30 @@ import {
   LogOutIcon,
   UserIcon,
   UsersIcon,
-  FacebookIcon,
-  TwitterIcon,
   MoonIcon,
   SunIcon,
   TrendingUp,
   ChevronsLeft,
   ChevronsRight,
+  Settings,
 } from 'lucide-react'
 import { usePathname } from 'next/navigation'
 import { Button } from '@/components/ui/button'
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip'
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from '@/components/ui/tooltip'
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu'
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 
 interface SideNavbarProps {
   isOpen: boolean
@@ -35,27 +48,31 @@ export default function SideNavbar({ isOpen, isCollapsed, toggleCollapse }: Side
     { icon: ShoppingCartIcon, label: 'Orders', href: '/orders' },
     { icon: ShoppingCartIcon, label: 'My Trading', href: '/trading' },
     { icon: BellIcon, label: 'Notifications', href: '/notifications' },
-    { icon: UserIcon, label: 'Profile', href: '/profile' },
-    { icon: UsersIcon, label: 'Referrals', href: '/referrals' },
   ]
 
   return (
     <div
-      className={`fixed top-16 left-0 h-full bg-background transition-all duration-300 ${
+      className={`fixed top-0 left-0 h-full bg-background transition-all duration-300 ${
         isOpen ? (isCollapsed ? 'w-20' : 'w-64') : 'w-0'
-      } overflow-hidden z-40 border-r`}
+      } overflow-hidden z-40 border-r flex flex-col`}
     >
+      <div className="flex items-center justify-between p-4 border-b">
+        {!isCollapsed && <h1 className="font-bold text-lg">Web3Crypto.ai</h1>}
+        <Button variant="ghost" size="icon" onClick={toggleCollapse}>
+          {isCollapsed ? <ChevronsRight /> : <ChevronsLeft />}
+        </Button>
+      </div>
       <TooltipProvider>
-        <nav className="h-full flex flex-col p-2 gap-y-1">
+        <nav className="flex-grow p-2 space-y-1">
           {menuItems.map((item, index) => (
             <Tooltip key={index} delayDuration={0}>
               <TooltipTrigger asChild>
                 <Link
                   href={item.href}
-                  className={`flex items-center space-x-3 p-3 rounded-md text-sm font-medium transition-colors ${
+                  className={`flex items-center gap-3 p-3 rounded-lg text-sm font-medium transition-colors ${
                     pathName === item.href
-                      ? 'bg-primary/10 text-primary font-semibold'
-                      : 'text-muted-foreground hover:bg-primary/5 hover:text-primary'
+                      ? 'bg-primary/10 text-primary'
+                      : 'text-muted-foreground hover:bg-muted hover:text-foreground'
                   } ${isCollapsed ? 'justify-center' : ''}`}
                 >
                   <item.icon className="h-5 w-5" />
@@ -69,55 +86,63 @@ export default function SideNavbar({ isOpen, isCollapsed, toggleCollapse }: Side
               )}
             </Tooltip>
           ))}
-          <div className="mt-auto space-y-1">
-            <Tooltip delayDuration={0}>
-              <TooltipTrigger asChild>
-                <Button
-                  variant="ghost"
-                  onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
-                  className={`w-full justify-start flex items-center space-x-3 text-sm font-medium text-muted-foreground hover:text-primary hover:bg-primary/5 p-3 ${
-                    isCollapsed ? 'justify-center' : ''
-                  }`}
-                >
-                  {theme === 'dark' ? <SunIcon className="h-5 w-5" /> : <MoonIcon className="h-5 w-5" />}
-                  {!isCollapsed && <span>{theme === 'dark' ? 'Light Mode' : 'Dark Mode'}</span>}
-                </Button>
-              </TooltipTrigger>
-              {isCollapsed && (
-                <TooltipContent side="right">
-                  <p>{theme === 'dark' ? 'Light Mode' : 'Dark Mode'}</p>
-                </TooltipContent>
-              )}
-            </Tooltip>
-            <Tooltip delayDuration={0}>
-              <TooltipTrigger asChild>
-                <Button
-                  variant="ghost"
-                  onClick={() => console.log('Logout triggered via console')}
-                  className={`w-full justify-start flex items-center space-x-3 text-sm font-medium text-muted-foreground hover:text-primary hover:bg-primary/5 p-3 ${
-                    isCollapsed ? 'justify-center' : ''
-                  }`}
-                >
-                  <LogOutIcon className="h-5 w-5" />
-                  {!isCollapsed && <span>Logout</span>}
-                </Button>
-              </TooltipTrigger>
-              {isCollapsed && (
-                <TooltipContent side="right">
-                  <p>Logout</p>
-                </TooltipContent>
-              )}
-            </Tooltip>
-            <Button
-              variant="ghost"
-              onClick={toggleCollapse}
-              className={`w-full justify-center flex items-center space-x-3 text-sm font-medium text-muted-foreground hover:text-primary hover:bg-primary/5 p-3`}
-            >
-              {isCollapsed ? <ChevronsRight className="h-5 w-5" /> : <ChevronsLeft className="h-5 w-5" />}
-            </Button>
-          </div>
         </nav>
       </TooltipProvider>
+
+      <div className="mt-auto border-t p-2">
+        <DropdownMenu>
+          <TooltipProvider>
+            <Tooltip delayDuration={0}>
+              <TooltipTrigger asChild>
+                <DropdownMenuTrigger asChild>
+                  <Button
+                    variant="ghost"
+                    className={`w-full flex items-center gap-3 p-3 rounded-lg text-sm font-medium transition-colors ${
+                      isCollapsed ? 'justify-center' : 'justify-start'
+                    }`}
+                  >
+                    <Avatar className="w-8 h-8">
+                      <AvatarImage src="https://github.com/shadcn.png" alt="@shadcn" />
+                      <AvatarFallback>CN</AvatarFallback>
+                    </Avatar>
+                    {!isCollapsed && <span className="font-semibold">User Name</span>}
+                  </Button>
+                </DropdownMenuTrigger>
+              </TooltipTrigger>
+              {isCollapsed && (
+                <TooltipContent side="right">
+                  <p>User Menu</p>
+                </TooltipContent>
+              )}
+            </Tooltip>
+          </TooltipProvider>
+          <DropdownMenuContent side="right" align="start" className="w-56">
+            <DropdownMenuLabel>My Account</DropdownMenuLabel>
+            <DropdownMenuSeparator />
+            <Link href="/profile">
+              <DropdownMenuItem className="cursor-pointer">
+                <UserIcon className="mr-2 h-4 w-4" />
+                <span>Profile</span>
+              </DropdownMenuItem>
+            </Link>
+            <Link href="/referrals">
+              <DropdownMenuItem className="cursor-pointer">
+                <UsersIcon className="mr-2 h-4 w-4" />
+                <span>Referrals</span>
+              </DropdownMenuItem>
+            </Link>
+            <DropdownMenuItem onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}>
+              {theme === 'dark' ? <SunIcon className="mr-2 h-4 w-4" /> : <MoonIcon className="mr-2 h-4 w-4" />}
+              <span>Toggle Theme</span>
+            </DropdownMenuItem>
+            <DropdownMenuSeparator />
+            <DropdownMenuItem onClick={() => console.log('Logout triggered')}>
+              <LogOutIcon className="mr-2 h-4 w-4" />
+              <span>Log out</span>
+            </DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
+      </div>
     </div>
   )
 }
