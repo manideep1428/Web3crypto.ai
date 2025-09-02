@@ -73,7 +73,7 @@ const OrderDetailPage = () => {
       case 'Failed':
         return <XCircle className="w-5 h-5 text-red-500" />
       case 'Pending':
-        return <Clock className="w-5 h-5 text-yellow-500" />
+        return <Clock className="w-5 h-5 text-orange-500" />
       default:
         return <Info className="w-5 h-5 text-gray-500" />
     }

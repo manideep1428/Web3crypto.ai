@@ -22,6 +22,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { useState, useEffect } from "react";
 import { useSession } from "next-auth/react";
 import Footer from "@/components/core/Footer";
+import AnimatedText from "@/components/AnimatedText";
 
 export default function Component() {
   const router = useRouter();
@@ -114,7 +115,7 @@ export default function Component() {
         <div className="container mx-auto flex justify-between items-center">
           <Link href="/" className="flex items-center space-x-2">
             <Bitcoin className="h-8 w-8 text-primary" />
-            <span className="text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-yellow-400 to-yellow-600">
+            <span className="text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-orange-400 to-orange-600">
               Web3Crypto.ai
             </span>
           </Link>
@@ -202,24 +203,16 @@ export default function Component() {
               animate="visible"
               className="text-center space-y-8"
             >
-              <motion.div
-                variants={itemVariants}
+              <div
                 className="relative inline-block"
               >
-                <motion.h1 className="text-4xl sm:text-5xl md:text-7xl font-bold leading-tight bg-clip-text text-transparent bg-gradient-to-r from-yellow-300 via-yellow-500 to-yellow-600">
-                  Learn Crypto with
-                  <span className="block mt-2">Confidence</span>
-                </motion.h1>
-                <div className="absolute -inset-1 bg-gradient-to-r from-primary/20 to-yellow-600/20 blur-lg -z-10" />
-              </motion.div>
+                <h1 className="text-4xl sm:text-5xl md:text-7xl font-bold leading-tight bg-clip-text text-transparent bg-gradient-to-r from-orange-300 via-orange-500 to-red-500">
+                  <AnimatedText text="Learn Crypto with Confidence" />
+                </h1>
+                <div className="absolute -inset-1 bg-gradient-to-r from-primary/20 to-orange-600/20 blur-lg -z-10" />
+              </div>
 
-              <motion.p
-                variants={itemVariants}
-                className="text-lg sm:text-xl md:text-2xl text-foreground max-w-3xl mx-auto leading-relaxed" // Changed text-foreground/80 to text-foreground
-              >
-                Join the Journey about Crypto on the world's most
-                powerful crypto learning platform.
-              </motion.p>
+              <AnimatedText text="Join the Journey about Crypto on the world's most powerful crypto learning platform." className="text-lg sm:text-xl md:text-2xl text-foreground max-w-3xl mx-auto leading-relaxed" />
 
               <motion.div
                 variants={itemVariants}
@@ -227,7 +220,7 @@ export default function Component() {
               >
                 <Button
                   onClick={() => router.push("/auth/signin")}
-                  className="w-full sm:w-auto bg-gradient-to-r from-yellow-500 to-yellow-600 hover:from-yellow-600 hover:to-yellow-700 text-primary-foreground text-lg py-6 px-8 rounded-xl shadow-lg hover:shadow-yellow-500/25 transition-all duration-300"
+                  className="w-full sm:w-auto bg-gradient-to-r from-orange-500 to-red-500 hover:from-orange-600 hover:to-red-600 text-primary-foreground text-lg py-6 px-8 rounded-xl shadow-lg hover:shadow-orange-500/25 transition-all duration-300"
                 >
                   Start Trading Now
                   <ArrowRight className="ml-2 h-5 w-5" />
@@ -280,7 +273,7 @@ export default function Component() {
                     p-6 sm:p-8 rounded-2xl shadow-lg hover:shadow-primary/20 border backdrop-blur-sm transition-all duration-300"
                 >
                   <feature.icon className="h-12 w-12 text-primary mb-6" />
-                  <h3 className="text-xl font-semibold mb-3 bg-gradient-to-r from-yellow-400 to-yellow-600 bg-clip-text text-transparent">
+                  <h3 className="text-xl font-semibold mb-3 bg-gradient-to-r from-orange-400 to-orange-600 bg-clip-text text-transparent">
                     {feature.title}
                   </h3>
                   <p className="text-muted-foreground">{feature.description}</p>
@@ -298,7 +291,7 @@ export default function Component() {
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5 }}
-              className="text-3xl sm:text-4xl md:text-5xl font-bold text-center mb-16 bg-gradient-to-r from-yellow-300 via-yellow-500 to-yellow-600 bg-clip-text text-transparent"
+              className="text-3xl sm:text-4xl md:text-5xl font-bold text-center mb-16 bg-gradient-to-r from-orange-300 via-orange-500 to-red-500 bg-clip-text text-transparent"
             >
               Popular Cryptocurrencies
             </motion.h2>
@@ -339,7 +332,7 @@ export default function Component() {
                       <div className="absolute inset-0 bg-primary/20 blur-lg" />
                     </div>
                     <div>
-                      <h3 className="text-xl font-semibold bg-gradient-to-r from-yellow-400 to-yellow-600 bg-clip-text text-transparent">
+                      <h3 className="text-xl font-semibold bg-gradient-to-r from-orange-400 to-orange-600 bg-clip-text text-transparent">
                         {cryptoItem.name}
                       </h3>
                       <p className="text-muted-foreground">{cryptoItem.symbol}</p>
@@ -391,7 +384,7 @@ export default function Component() {
               >
                 <motion.h2
                   variants={itemVariants}
-                  className="text-3xl sm:text-4xl md:text-5xl font-bold bg-gradient-to-r from-yellow-300 via-yellow-500 to-yellow-600 bg-clip-text text-transparent"
+                  className="text-3xl sm:text-4xl md:text-5xl font-bold bg-gradient-to-r from-orange-300 via-orange-500 to-red-500 bg-clip-text text-transparent"
                 >
                   Start Your Crypto Journey Today
                 </motion.h2>
@@ -437,7 +430,7 @@ export default function Component() {
                 <motion.div variants={itemVariants}>
                   <Button
                     onClick={() => router.push("/auth/signin")}
-                    className="bg-gradient-to-r from-yellow-500 to-yellow-600 hover:from-yellow-600 hover:to-yellow-700 text-primary-foreground text-lg py-6 px-8 rounded-xl shadow-lg hover:shadow-primary/25 transition-all duration-300"
+                    className="bg-gradient-to-r from-orange-500 to-red-500 hover:from-orange-600 hover:to-red-600 text-primary-foreground text-lg py-6 px-8 rounded-xl shadow-lg hover:shadow-primary/25 transition-all duration-300"
                   >
                     Create Your Free Account
                     <ArrowRight className="ml-2 h-5 w-5" />
@@ -451,7 +444,7 @@ export default function Component() {
                 viewport={{ once: true }}
                 className="relative"
               >
-                <div className="absolute inset-0 bg-gradient-to-r from-primary/30 to-yellow-600/30 rounded-2xl transform -rotate-6 blur-xl" /> {/* Assuming yellow-600 is acceptable or replace with a theme variable */}
+                <div className="absolute inset-0 bg-gradient-to-r from-primary/30 to-orange-600/30 rounded-2xl transform -rotate-6 blur-xl" /> {/* The orange-600 is part of the new color scheme */}
                 <div className="relative z-10 rounded-2xl overflow-hidden shadow-2xl border border-primary/20">
                   <div className="relative w-full h-80 lg:h-96">
                     <Image

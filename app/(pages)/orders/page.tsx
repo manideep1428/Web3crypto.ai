@@ -99,7 +99,7 @@ export default function OrderDisplay() {
               <span className="text-lg font-semibold">${order.amount.toFixed(2)}</span>
               {order.status === 'Success' && <CheckCircle className="text-green-500 w-5 h-5" />}
               {order.status === 'Failed' && <XCircle className="text-red-500 w-5 h-5" />}
-              {order.status === 'Pending' && <Clock className="text-yellow-500 w-5 h-5" />}
+              {order.status === 'Pending' && <Clock className="text-orange-500 w-5 h-5" />}
             </div>
             <div className="flex items-center text-sm text-muted-foreground">
               {order.transactionType === 'Buy' ? (
